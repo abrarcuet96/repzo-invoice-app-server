@@ -1,5 +1,6 @@
 export default interface IExpense {
-  id: string;
+  // id: string;
+  userId?: string;
   name: string;
   amount: number;
   currency: string;

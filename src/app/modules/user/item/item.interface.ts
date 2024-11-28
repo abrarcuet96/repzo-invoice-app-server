@@ -1,5 +1,6 @@
 export default interface IItem {
-  id: string;
+  // id: string;
+  userId?: string;
   name: string;
   description: string;
   price: number;

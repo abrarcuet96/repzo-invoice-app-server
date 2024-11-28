@@ -15,7 +15,7 @@ export default [
       'no-unused-expressions': 'error',
       'prefer-const': 'error',
       'no-undef': 'error',
-      // 'no-console': 'warn',
+      'no-console': 'warn',
     },
   },
 ];

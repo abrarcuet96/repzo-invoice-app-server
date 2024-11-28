@@ -16,3 +16,4 @@ const SettingsSchema = new Schema<ISettings>({
   language: { type: String, required: [true, 'Language is required'] },
 });
 export const Settings = model<ISettings>('Settings', SettingsSchema);
+export default SettingsSchema;

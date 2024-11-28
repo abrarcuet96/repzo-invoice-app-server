@@ -17,13 +17,13 @@ app.use(cors());
 
 // Routes:
 app.use('/api/users', UserRoutes);
-app.use('/api/users/customer', CustomerRoutes);
-app.use('/api/users/expense', ExpenseRoutes);
-app.use('/api/users/invoice', InvoiceRoutes);
-app.use('/api/users/invoiceItem', InvoiceItemRoutes);
-app.use('/api/users/item', ItemRoutes);
-app.use('/api/users/notification', NotificationRoutes);
-app.use('/api/users/payment', PaymentRoutes);
-app.use('/api/users/profile', ProfileRoutes);
-app.use('/api/users/settings', SettingsRoutes);
+app.use('/api/customer', CustomerRoutes);
+app.use('/api/expense', ExpenseRoutes);
+app.use('/api/invoice', InvoiceRoutes);
+app.use('/api/invoiceItem', InvoiceItemRoutes);
+app.use('/api/item', ItemRoutes);
+app.use('/api/notification', NotificationRoutes);
+app.use('/api/payment', PaymentRoutes);
+app.use('/api/profile', ProfileRoutes);
+app.use('/api/settings', SettingsRoutes);
 export default app;

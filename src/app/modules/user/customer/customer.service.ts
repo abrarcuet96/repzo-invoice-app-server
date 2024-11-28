@@ -15,7 +15,7 @@ const getCustomerFromDB = async () => {
 };
 // getSingle customer:
 const getSingleCustomerFromDB = async (id: string) => {
-  const result = await Customer.findById({ id });
+  const result = await Customer.findById(id);
   return result;
 };
 // update customer:

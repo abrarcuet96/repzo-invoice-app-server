@@ -4,10 +4,7 @@ import { User } from './user.model';
 // User services:
 // create user:
 const createUserIntoDB = async (user: IUser) => {
-  console.log(user);
   const result = await User.create(user);
-  console.log(result);
-
   return result;
 };
 // get user:

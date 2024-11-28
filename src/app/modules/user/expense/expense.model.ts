@@ -2,7 +2,8 @@ import { model, Schema } from 'mongoose';
 import IExpense from './expense.interface';
 
 const ExpenseSchema = new Schema<IExpense>({
-  id: { type: String, required: [true, 'Expense ID is required'] },
+  // id: { type: String, required: [true, 'Expense ID is required'] },
+  userId: { type: String, required: false },
   name: { type: String, required: [true, 'Expense name is required'] },
   amount: {
     type: Number,
@@ -25,3 +26,4 @@ const ExpenseSchema = new Schema<IExpense>({
   category: { type: String, required: [true, 'Category is required'] },
 });
 export const Expense = model<IExpense>('Expense', ExpenseSchema);
+export default ExpenseSchema;

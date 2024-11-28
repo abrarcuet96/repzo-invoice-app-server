@@ -2,7 +2,8 @@ import IInvoiceItem from '../invoiceItem/invoiceItem.interface';
 import IPayment from '../payment/payment.interface';
 
 export default interface IInvoice {
-  id: string;
+  // id: string;
+  userId?: string;
   customerId: string;
   items: IInvoiceItem[];
   total: number;

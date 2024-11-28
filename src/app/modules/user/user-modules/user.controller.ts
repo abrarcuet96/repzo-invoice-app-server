@@ -24,7 +24,6 @@ const createUser = async (req: Request, res: Response) => {
 const getUsers = async (req: Request, res: Response) => {
   try {
     const result = await UserServices.getUserFromDB();
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Users are retrieved successfully',
@@ -43,7 +42,6 @@ const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const result = await UserServices.getSingleUserFromDB(userId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'User is retrieved successfully',
@@ -63,7 +61,6 @@ const updateUser = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const body = req.body;
     const result = await UserServices.updateUser(userId, body);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'User is updated successfully',
@@ -82,7 +79,6 @@ const deleteUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const result = await UserServices.deleteUser(userId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'User is deleted successfully',

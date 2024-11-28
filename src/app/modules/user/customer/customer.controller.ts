@@ -1,11 +1,17 @@
 import { Request, Response } from 'express';
+import { User } from '../user-modules/user.model';
+import { Customer } from './customer.model';
 import { CustomerServices } from './customer.service';
 
 const createCustomer = async (req: Request, res: Response) => {
   try {
-    const { customer: customerData } = req.body;
-
+    const customerData = req.body;
+    const { userId } = req.params;
+    customerData.userId = userId;
     const result = await CustomerServices.createCustomerIntoDB(customerData);
+    customerData.customerId = result._id.toString();
+
+    await User.insertCustomerToUserData(userId, customerData);
     res.status(200).json({
       success: true,
       message: 'Customer is created successfully',
@@ -24,7 +30,7 @@ const createCustomer = async (req: Request, res: Response) => {
 const getCustomers = async (req: Request, res: Response) => {
   try {
     const result = await CustomerServices.getCustomerFromDB();
-    console.log(result);
+
     res.status(200).json({
       success: true,
       message: 'Customers are retrieved successfully',
@@ -43,7 +49,7 @@ const getSingleCustomer = async (req: Request, res: Response) => {
   try {
     const { customerId } = req.params;
     const result = await CustomerServices.getSingleCustomerFromDB(customerId);
-    console.log(result);
+
     res.status(200).json({
       success: true,
       message: 'Customer is retrieved successfully',
@@ -61,9 +67,17 @@ const getSingleCustomer = async (req: Request, res: Response) => {
 const updateCustomer = async (req: Request, res: Response) => {
   try {
     const { customerId } = req.params;
+    // console.log(customerId);
     const body = req.body;
     const result = await CustomerServices.updateCustomer(customerId, body);
-    console.log(result);
+    const customerData = await Customer.findById(customerId);
+    const userId = customerData?.userId;
+    const customerID = customerData?._id?.toString();
+    await User.updateUserCustomerWhenCustomerIsUpdated(
+      userId,
+      customerID,
+      body,
+    );
     res.status(200).json({
       success: true,
       message: 'Customer is updated successfully',
@@ -82,7 +96,7 @@ const deleteCustomer = async (req: Request, res: Response) => {
   try {
     const { customerId } = req.params;
     const result = await CustomerServices.deleteCustomer(customerId);
-    console.log(result);
+
     res.status(200).json({
       success: true,
       message: 'Customer is deleted successfully',

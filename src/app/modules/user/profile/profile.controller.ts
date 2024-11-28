@@ -47,7 +47,6 @@ const getSingleProfile = async (req: Request, res: Response) => {
   try {
     const { profileId } = req.params;
     const result = await ProfileServices.getSingleProfileFromDB(profileId);
-    // console.log(result);
     res.status(200).json({
       success: true,
       message: 'Profile is retrieved successfully',
@@ -66,15 +65,12 @@ const updateProfile = async (req: Request, res: Response) => {
   try {
     const { profileId } = req.params;
     const body = req.body;
-    console.log(body);
-
     const result = await ProfileServices.updateProfile(profileId, body);
     // Update the related User document
 
     const profileData = await Profile.findById(profileId);
     const userId = profileData?.userId;
-    // const userUpdateData = flattenObject(body, 'profile');
-    await User.updateUserProfileWhenProfieIsUpdated(userId, body);
+    await User.updateUserProfileWhenProfileIsUpdated(userId, body);
     res.status(200).json({
       success: true,
       message: 'Profile is updated successfully',

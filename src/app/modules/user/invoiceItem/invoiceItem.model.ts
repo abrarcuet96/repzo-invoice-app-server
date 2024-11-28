@@ -2,7 +2,8 @@ import { model, Schema } from 'mongoose';
 import IInvoiceItem from './invoiceItem.interface';
 
 const InvoiceItemSchema = new Schema<IInvoiceItem>({
-  itemId: { type: String, required: [true, 'Item ID is required'] },
+  // itemId: { type: String, required: [true, 'Item ID is required'] },
+  userId: { type: String, required: false },
   quantity: {
     type: Number,
     required: [true, 'Quantity is required'],
