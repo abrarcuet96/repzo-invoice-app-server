@@ -1,4 +1,9 @@
 import { Model } from 'mongoose';
+import IAdminAccessedUser from './adminAccessedUser/adminAccessedUser.interface';
+import IAdminCustomer from './adminCustomer/adminCustomer.interface';
+import IAdminExpense from './adminExpense/adminExpense.interface';
+import IAdminInvoice from './adminInvoice/adminInvoice.interface';
+import IAdminUserProfile from './adminUserProfile/adminUserProfile.interface';
 
 // Admin Interface
 export interface IAdmin {
@@ -9,60 +14,6 @@ export interface IAdmin {
   accessedUser?: IAdminAccessedUser[];
 }
 
-// Accessed User Interface
-export interface IAdminAccessedUser {
-  // _id: string;
-  name: string;
-  email: string;
-  role: 'user';
-  userId?: string;
-  profile?: IAdminUserProfile;
-  customers?: IAdminCustomer[];
-  invoices?: IAdminInvoice[];
-  expenses?: IAdminExpense[];
-}
-
-// User Profile Interface
-export interface IAdminUserProfile {
-  phone: string;
-  company: string;
-  address: {
-    city: string;
-    state: string;
-    country: string;
-  };
-}
-
-// Customer Interface
-export interface IAdminCustomer {
-  customerId?: string;
-  name: string;
-  email: string;
-  phone: string;
-  address: {
-    city: string;
-  };
-}
-
-// Invoice Interface
-export interface IAdminInvoice {
-  invoiceId?: string;
-  customerId?: string;
-  total: number;
-  currency: string;
-  status: 'paid' | 'unpaid' | 'overdue';
-  dueDate: string; // ISO date string
-}
-
-// Expense Interface
-export interface IAdminExpense {
-  expenseId?: string;
-  name: string;
-  amount: number;
-  currency: string;
-  date: string; // ISO date string
-  category: string;
-}
 export interface ModelAdminModel extends Model<IAdmin> {
   // insert into user when data is created:
   insertUserToAdminData(

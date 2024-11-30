@@ -2,15 +2,14 @@ import { model, Schema } from 'mongoose';
 import IAddress from './address.interface';
 
 const AddressSchema = new Schema<IAddress>({
-  street: { type: String, required: [true, 'Street is required'] },
-  city: { type: String, required: [true, 'City is required'] },
-  state: { type: String, required: [true, 'State is required'] },
+  street: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
   postalCode: {
     type: String,
-    required: [true, 'Postal code is required'],
-    match: [/^\d{4,6}$/, 'Invalid postal code'],
+    required: true,
   },
-  country: { type: String, required: [true, 'Country is required'] },
+  country: { type: String, required: true },
 });
 export const Address = model<IAddress>('Address', AddressSchema);
 export default AddressSchema;

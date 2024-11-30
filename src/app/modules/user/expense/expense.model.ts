@@ -5,26 +5,21 @@ const ExpenseSchema = new Schema<IExpense>({
   // id: { type: String, required: [true, 'Expense ID is required'] },
   userId: { type: String, required: false },
   expenseId: { type: String, required: false },
-  name: { type: String, required: [true, 'Expense name is required'] },
+  name: { type: String, required: true },
   amount: {
     type: Number,
-    required: [true, 'Amount is required'],
-    min: [0, 'Amount cannot be negative'],
+    required: true,
   },
   currency: {
     type: String,
-    required: [true, 'Currency is required'],
+    required: true,
     enum: ['USD', 'EUR', 'BDT', 'GBP'],
   },
   date: {
     type: String,
-    required: [true, 'Expense date is required'],
-    validate: {
-      validator: (v) => !isNaN(new Date(v).getTime()),
-      message: 'Invalid expense date',
-    },
+    required: true,
   },
-  category: { type: String, required: [true, 'Category is required'] },
+  category: { type: String, required: true },
 });
 export const Expense = model<IExpense>('Expense', ExpenseSchema);
 export default ExpenseSchema;

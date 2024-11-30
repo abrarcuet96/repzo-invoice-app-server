@@ -6,16 +6,14 @@ const CustomerSchema = new Schema<ICustomer>({
   // id: { type: String, required: [true, 'Customer ID is required'] },
   userId: { type: String, required: false },
   customerId: { type: String, required: false },
-  name: { type: String, required: [true, 'Customer name is required'] },
+  name: { type: String, required: true },
   email: {
     type: String,
-    required: [true, 'Email is required'],
-    match: [/.+@.+\..+/, 'Invalid email address'],
+    required: true,
   },
   phone: {
     type: String,
-    required: [true, 'Phone is required'],
-    match: [/^\+\d{7,15}$/, 'Invalid phone number format'],
+    required: true,
   },
   address: { type: AddressSchema, required: false },
 });

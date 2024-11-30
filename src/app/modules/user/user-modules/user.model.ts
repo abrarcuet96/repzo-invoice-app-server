@@ -14,15 +14,14 @@ import SettingsSchema from '../settings/settings.model';
 import IUser, { UserModel } from './user.interface';
 
 const UserSchema = new Schema<IUser, UserModel>({
-  name: { type: String, required: [true, 'Name is required'] },
+  name: { type: String, required: true },
   email: {
     type: String,
     required: [true, 'Email is required'],
-    match: [/.+@.+\..+/, 'Invalid email address'],
   },
   role: {
     type: String,
-    required: [true, 'Role is required'],
+    required: true,
     enum: ['user', 'admin'],
   },
   giveAccessAs: {

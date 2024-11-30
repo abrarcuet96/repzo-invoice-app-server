@@ -6,21 +6,16 @@ const PaymentSchema = new Schema<IPayment>({
   userId: { type: String, required: false },
   method: {
     type: String,
-    required: [true, 'Payment method is required'],
+    required: true,
     enum: ['credit_card', 'paypal', 'bank_transfer', 'cash'],
   },
   amount: {
     type: Number,
-    required: [true, 'Amount is required'],
-    min: [0, 'Amount cannot be negative'],
+    required: true,
   },
   date: {
     type: String,
-    required: [true, 'Payment date is required'],
-    validate: {
-      validator: (v) => !isNaN(new Date(v).getTime()),
-      message: 'Invalid payment date',
-    },
+    required: true,
   },
 });
 export const Payment = model<IPayment>('Payment', PaymentSchema);

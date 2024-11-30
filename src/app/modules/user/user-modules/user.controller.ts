@@ -1,13 +1,16 @@
 import { Request, Response } from 'express';
 import { AdminModel } from '../../admin/admin.model';
 import { AdminServices } from '../../admin/admin.service';
+import AdminValidationSchema from '../../admin/admin.validation';
 import { UserServices } from './user.service';
+import UserValidationSchema from './user.validation';
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
     if (userData.role === 'user') {
-      const result = await UserServices.createUserIntoDB(userData);
+      const zodUserParsedData = UserValidationSchema.parse(userData);
+      const result = await UserServices.createUserIntoDB(zodUserParsedData);
       const adminData = await AdminModel.find();
       const adminId = adminData[0]?._id.toString();
       userData.userId = result._id.toString();
@@ -20,7 +23,9 @@ const createUser = async (req: Request, res: Response) => {
         data: result,
       });
     } else if (userData.role === 'admin') {
-      const result = await AdminServices.createAdminIntoDB(userData);
+      // data validation using zod:
+      const zodParsedAdminData = AdminValidationSchema.parse(userData);
+      const result = await AdminServices.createAdminIntoDB(zodParsedAdminData);
       res.status(200).json({
         success: true,
         message: 'Admin is created successfully',

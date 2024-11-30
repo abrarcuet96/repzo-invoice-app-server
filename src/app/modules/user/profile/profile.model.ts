@@ -7,10 +7,9 @@ const ProfileSchema = new Schema<IProfile>({
   profileId: { type: String, required: false },
   phone: {
     type: String,
-    required: [true, 'Phone is required'],
-    match: [/^0(13|14|15|16|17|18|19)\d{8}$/, 'Invalid phone number format'],
+    required: true,
   },
-  company: { type: String, required: [true, 'Company name is required'] },
+  company: { type: String, required: true },
   address: { type: AddressSchema, required: true },
 });
 

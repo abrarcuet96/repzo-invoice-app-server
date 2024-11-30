@@ -5,21 +5,20 @@ const ItemSchema = new Schema<IItem>({
   // id: { type: String, required: [true, 'Item ID is required'] },
   userId: { type: String, required: false },
   itemId: { type: String, required: false },
-  name: { type: String, required: [true, 'Item name is required'] },
-  description: { type: String, required: [true, 'Description is required'] },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
   price: {
     type: Number,
-    required: [true, 'Price is required'],
-    min: [0, 'Price cannot be negative'],
+    required: true,
   },
   currency: {
     type: String,
-    required: [true, 'Currency is required'],
+    required: true,
     enum: ['USD', 'EUR', 'BDT', 'GBP'],
   },
   type: {
     type: String,
-    required: [true, 'Type is required'],
+    required: true,
     enum: ['service', 'product'],
   },
 });

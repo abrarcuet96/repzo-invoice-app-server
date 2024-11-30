@@ -4,14 +4,12 @@ import ISettings from './settings.interface';
 const SettingsSchema = new Schema<ISettings>({
   currency: {
     type: String,
-    required: [true, 'Currency is required'],
+    required: true,
     enum: ['USD', 'EUR', 'BDT', 'GBP'],
   },
   taxRate: {
     type: Number,
-    required: [true, 'Tax rate is required'],
-    min: [0, 'Tax rate cannot be negative'],
-    max: [100, 'Tax rate cannot exceed 100'],
+    required: true,
   },
   language: { type: String, required: [true, 'Language is required'] },
 });
