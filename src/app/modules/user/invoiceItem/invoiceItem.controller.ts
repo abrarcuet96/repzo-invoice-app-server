@@ -25,7 +25,6 @@ const createInvoiceItem = async (req: Request, res: Response) => {
 const getInvoiceItems = async (req: Request, res: Response) => {
   try {
     const result = await InvoiceItemServices.getInvoiceItemFromDB();
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'InvoiceItems are retrieved successfully',
@@ -45,7 +44,6 @@ const getSingleInvoiceItem = async (req: Request, res: Response) => {
     const { invoiceItemId } = req.params;
     const result =
       await InvoiceItemServices.getSingleInvoiceItemFromDB(invoiceItemId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'InvoiceItem is retrieved successfully',
@@ -68,7 +66,6 @@ const updateInvoiceItem = async (req: Request, res: Response) => {
       invoiceItemId,
       body,
     );
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'InvoiceItem is updated successfully',
@@ -87,7 +84,6 @@ const deleteInvoiceItem = async (req: Request, res: Response) => {
   try {
     const { invoiceItemId } = req.params;
     const result = await InvoiceItemServices.deleteInvoiceItem(invoiceItemId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'InvoiceItem is deleted successfully',

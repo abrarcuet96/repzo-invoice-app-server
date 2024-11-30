@@ -1,7 +1,6 @@
 import { model, Schema } from 'mongoose';
 import IAdminUserProfile from './adminUserProfile.interface';
 
-// User Profile Schema
 const AdminUserProfileSchema = new Schema<IAdminUserProfile>({
   phone: {
     type: String,

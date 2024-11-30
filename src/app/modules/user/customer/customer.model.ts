@@ -3,7 +3,6 @@ import AddressSchema from '../address/address.model';
 import ICustomer from './customer.interface';
 
 const CustomerSchema = new Schema<ICustomer>({
-  // id: { type: String, required: [true, 'Customer ID is required'] },
   userId: { type: String, required: false },
   customerId: { type: String, required: false },
   name: { type: String, required: true },

@@ -3,7 +3,7 @@ import AdminCustomerValidationSchema from '../adminCustomer/adminCustomer.valida
 import AdminExpenseValidationSchema from '../adminExpense/adminExpense.validation';
 import AdminInvoiceValidationSchema from '../adminInvoice/adminInvoice.validation';
 import AdminUserProfileValidationSchema from '../adminUserProfile/adminUserProfile.validation';
-// Admin Accessed User Schema Validation
+
 const AdminAccessedUserValidationSchema = z.object({
   name: z.string(),
   email: z.string().email(),

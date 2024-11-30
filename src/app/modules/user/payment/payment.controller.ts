@@ -24,7 +24,6 @@ const createPayment = async (req: Request, res: Response) => {
 const getPayments = async (req: Request, res: Response) => {
   try {
     const result = await PaymentServices.getPaymentFromDB();
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Payments are retrieved successfully',
@@ -43,7 +42,6 @@ const getSinglePayment = async (req: Request, res: Response) => {
   try {
     const { paymentId } = req.params;
     const result = await PaymentServices.getSinglePaymentFromDB(paymentId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Payment is retrieved successfully',
@@ -63,7 +61,6 @@ const updatePayment = async (req: Request, res: Response) => {
     const { paymentId } = req.params;
     const body = req.body;
     const result = await PaymentServices.updatePayment(paymentId, body);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Payment is updated successfully',
@@ -82,7 +79,6 @@ const deletePayment = async (req: Request, res: Response) => {
   try {
     const { paymentId } = req.params;
     const result = await PaymentServices.deletePayment(paymentId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Payment is deleted successfully',

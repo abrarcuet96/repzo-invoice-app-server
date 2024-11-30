@@ -24,7 +24,6 @@ const createSettings = async (req: Request, res: Response) => {
 const getSettingss = async (req: Request, res: Response) => {
   try {
     const result = await SettingsServices.getSettingsFromDB();
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Settingss are retrieved successfully',
@@ -43,7 +42,6 @@ const getSingleSettings = async (req: Request, res: Response) => {
   try {
     const { settingsId } = req.params;
     const result = await SettingsServices.getSingleSettingsFromDB(settingsId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Settings is retrieved successfully',
@@ -63,7 +61,6 @@ const updateSettings = async (req: Request, res: Response) => {
     const { settingsId } = req.params;
     const body = req.body;
     const result = await SettingsServices.updateSettings(settingsId, body);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Settings is updated successfully',
@@ -82,7 +79,6 @@ const deleteSettings = async (req: Request, res: Response) => {
   try {
     const { settingsId } = req.params;
     const result = await SettingsServices.deleteSettings(settingsId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Settings is deleted successfully',

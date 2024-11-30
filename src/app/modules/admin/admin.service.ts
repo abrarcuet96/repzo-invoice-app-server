@@ -1,5 +1,4 @@
 // admin services:
-
 import { IAdmin } from './admin.interface';
 import { AdminModel } from './admin.model';
 

@@ -2,7 +2,6 @@ import { model, Schema } from 'mongoose';
 import INotification from './notification.interface';
 
 const NotificationSchema = new Schema<INotification>({
-  // id: { type: String, required: [true, 'Notification ID is required'] },
   userId: { type: String, required: false },
   type: { type: String, required: true },
   message: { type: String, required: true },

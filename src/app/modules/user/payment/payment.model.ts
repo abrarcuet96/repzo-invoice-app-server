@@ -2,7 +2,6 @@ import { model, Schema } from 'mongoose';
 import IPayment from './payment.interface';
 
 const PaymentSchema = new Schema<IPayment>({
-  // id: { type: String, required: [true, 'Payment ID is required'] },
   userId: { type: String, required: false },
   method: {
     type: String,

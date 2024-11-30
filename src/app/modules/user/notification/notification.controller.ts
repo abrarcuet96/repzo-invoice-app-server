@@ -25,7 +25,6 @@ const createNotification = async (req: Request, res: Response) => {
 const getNotifications = async (req: Request, res: Response) => {
   try {
     const result = await NotificationServices.getNotificationFromDB();
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Notifications are retrieved successfully',
@@ -45,7 +44,6 @@ const getSingleNotification = async (req: Request, res: Response) => {
     const { notificationId } = req.params;
     const result =
       await NotificationServices.getSingleNotificationFromDB(notificationId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Notification is retrieved successfully',
@@ -68,7 +66,6 @@ const updateNotification = async (req: Request, res: Response) => {
       notificationId,
       body,
     );
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Notification is updated successfully',
@@ -88,7 +85,6 @@ const deleteNotification = async (req: Request, res: Response) => {
     const { notificationId } = req.params;
     const result =
       await NotificationServices.deleteNotification(notificationId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Notification is deleted successfully',

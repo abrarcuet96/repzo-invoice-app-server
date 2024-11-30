@@ -1,5 +1,4 @@
 interface IExpense {
-  // id: string;
   userId?: string;
   expenseId?: string;
   name: string;

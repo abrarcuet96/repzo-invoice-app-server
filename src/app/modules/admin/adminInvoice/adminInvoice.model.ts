@@ -1,7 +1,6 @@
 import { model, Schema } from 'mongoose';
 import IAdminInvoice from './adminInvoice.interface';
 
-// Invoice Schema
 const AdminInvoiceSchema = new Schema<IAdminInvoice>({
   invoiceId: { type: String, required: false },
   customerId: { type: String, required: false },

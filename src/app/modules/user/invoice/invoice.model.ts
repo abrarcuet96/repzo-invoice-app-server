@@ -4,7 +4,6 @@ import PaymentSchema from '../payment/payment.model';
 import IInvoice from './invoice.interface';
 
 const InvoiceSchema = new Schema<IInvoice>({
-  // id: { type: String, required: [true, 'Invoice ID is required'] },
   invoiceId: { type: String, required: false },
   userId: { type: String, required: false },
   customerId: { type: String, required: true },

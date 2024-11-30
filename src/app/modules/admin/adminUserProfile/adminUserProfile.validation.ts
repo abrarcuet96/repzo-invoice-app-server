@@ -1,5 +1,4 @@
 import { z } from 'zod';
-// Admin User Profile Schema Validation
 const AdminUserProfileValidationSchema = z.object({
   phone: z
     .string()

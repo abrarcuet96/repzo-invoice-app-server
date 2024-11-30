@@ -1,5 +1,4 @@
 import { z } from 'zod';
-// Admin Expense Schema Validation
 const AdminExpenseValidationSchema = z.object({
   expenseId: z.string().optional(),
   name: z.string().min(2).max(100).trim(),

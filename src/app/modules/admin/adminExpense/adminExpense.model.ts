@@ -1,7 +1,6 @@
 import { model, Schema } from 'mongoose';
 import IAdminExpense from './adminExpense.interface';
 
-// Expense Schema
 const AdminExpenseSchema = new Schema<IAdminExpense>({
   expenseId: { type: String, required: false },
   name: {

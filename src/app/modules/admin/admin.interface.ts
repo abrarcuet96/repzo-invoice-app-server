@@ -5,7 +5,6 @@ import IAdminExpense from './adminExpense/adminExpense.interface';
 import IAdminInvoice from './adminInvoice/adminInvoice.interface';
 import IAdminUserProfile from './adminUserProfile/adminUserProfile.interface';
 
-// Admin Interface
 export interface IAdmin {
   name: string;
   email: string;
@@ -15,7 +14,7 @@ export interface IAdmin {
 }
 
 export interface ModelAdminModel extends Model<IAdmin> {
-  // insert into user when data is created:
+  // insert into admin user when data is created:
   insertUserToAdminData(
     adminId: string,
     adminAccessedUserData: IAdminAccessedUser,
@@ -41,7 +40,7 @@ export interface ModelAdminModel extends Model<IAdmin> {
     adminUserInvoiceData: IAdminInvoice,
   ): Promise<IAdminInvoice | null>;
 
-  // update user data when data is updated:
+  // update admin user data when data is updated:
   updateAdminUserProfileWhenProfileIsUpdated(
     adminId: string | undefined,
     userId: string | undefined,
@@ -66,7 +65,7 @@ export interface ModelAdminModel extends Model<IAdmin> {
     expenseBody: object,
   ): Promise<IAdminInvoice | null>;
 
-  // delete data from user when any data is deleted:
+  // delete data from admin user when any data is deleted:
   deleteAdminUserProfileWhenProfileIsDeleted(
     adminId: string | undefined,
     userId: string | undefined,

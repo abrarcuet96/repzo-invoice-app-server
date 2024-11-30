@@ -1,5 +1,4 @@
 interface IItem {
-  // id: string;
   userId?: string;
   itemId?: string;
   name: string;

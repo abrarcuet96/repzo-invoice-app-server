@@ -16,8 +16,11 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-// Routes:
+// API Routes:
+// Admin Route:
 app.use('/api/admin', AdminRoutes);
+
+// User Routes:
 app.use('/api/users', UserRoutes);
 app.use('/api/customer', CustomerRoutes);
 app.use('/api/expense', ExpenseRoutes);
@@ -28,4 +31,5 @@ app.use('/api/notification', NotificationRoutes);
 app.use('/api/payment', PaymentRoutes);
 app.use('/api/profile', ProfileRoutes);
 app.use('/api/settings', SettingsRoutes);
+
 export default app;

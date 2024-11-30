@@ -1,7 +1,6 @@
 import IAddress from '../address/address.interface';
 
 interface ICustomer {
-  // id: string;
   userId?: string;
   customerId?: string;
   name: string;

@@ -141,7 +141,6 @@ AdminSchema.statics.updateAdminUserProfileWhenProfileIsUpdated =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateFields: { [key: string]: any } = {};
 
-    // Prepare the fields to update
     for (const [key, value] of Object.entries(body)) {
       updateFields[`accessedUser.$[userField].profile.$[profileField].${key}`] =
         value;
@@ -149,12 +148,10 @@ AdminSchema.statics.updateAdminUserProfileWhenProfileIsUpdated =
 
     // Update query
     await AdminModel.updateOne(
-      { _id: adminId }, // Match the admin by adminId
-      { $set: updateFields }, // Set the new values
+      { _id: adminId },
+      { $set: updateFields },
       {
-        arrayFilters: [
-          { 'userField.userId': userId }, // Match the specific user by userId
-        ],
+        arrayFilters: [{ 'userField.userId': userId }],
       },
     );
   };
@@ -170,7 +167,6 @@ AdminSchema.statics.updateAdminUserCustomerWhenCustomerIsUpdated =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateFields: { [key: string]: any } = {};
 
-    // Prepare the fields to update
     for (const [key, value] of Object.entries(body)) {
       updateFields[
         `accessedUser.$[userField].customers.$[customerField].${key}`
@@ -179,12 +175,12 @@ AdminSchema.statics.updateAdminUserCustomerWhenCustomerIsUpdated =
 
     // Update query
     await AdminModel.updateOne(
-      { _id: adminId }, // Match the admin by adminId
-      { $set: updateFields }, // Set the new values
+      { _id: adminId },
+      { $set: updateFields },
       {
         arrayFilters: [
-          { 'userField.userId': userId }, // Match the specific user by userId
-          { 'customerField.customerId': customerId }, // Match the specific customer by customerId
+          { 'userField.userId': userId },
+          { 'customerField.customerId': customerId },
         ],
       },
     );
@@ -202,7 +198,6 @@ AdminSchema.statics.updateAdminUserExpenseWhenExpenseIsUpdated =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateFields: { [key: string]: any } = {};
 
-    // Prepare the fields to update
     for (const [key, value] of Object.entries(body)) {
       updateFields[
         `accessedUser.$[userField].expenses.$[expenseField].${key}`
@@ -211,12 +206,12 @@ AdminSchema.statics.updateAdminUserExpenseWhenExpenseIsUpdated =
 
     // Update query
     await AdminModel.updateOne(
-      { _id: adminId }, // Match the admin by adminId
-      { $set: updateFields }, // Set the new values
+      { _id: adminId },
+      { $set: updateFields },
       {
         arrayFilters: [
-          { 'userField.userId': userId }, // Match the specific user by userId
-          { 'expenseField.expenseId': expenseId }, // Match the specific customer by customerId
+          { 'userField.userId': userId },
+          { 'expenseField.expenseId': expenseId },
         ],
       },
     );
@@ -233,21 +228,19 @@ AdminSchema.statics.updateAdminUserInvoiceWhenInvoiceIsUpdated =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateFields: { [key: string]: any } = {};
 
-    // Prepare the fields to update
     for (const [key, value] of Object.entries(body)) {
       updateFields[
         `accessedUser.$[userField].invoices.$[invoiceField].${key}`
       ] = value;
     }
 
-    // Update query
     await AdminModel.updateOne(
-      { _id: adminId }, // Match the admin by adminId
-      { $set: updateFields }, // Set the new values
+      { _id: adminId },
+      { $set: updateFields },
       {
         arrayFilters: [
-          { 'userField.userId': userId }, // Match the specific user by userId
-          { 'invoiceField.invoiceId': invoiceId }, // Match the specific customer by customerId
+          { 'userField.userId': userId },
+          { 'invoiceField.invoiceId': invoiceId },
         ],
       },
     );
@@ -260,14 +253,11 @@ AdminSchema.statics.deleteAdminUserCustomerWhenCustomerIsDeleted =
       { _id: adminId },
       {
         $pull: {
-          // Find the accessedUser by userId and pull the customer by customerId
           'accessedUser.$[userField].customers': { customerId: customerId },
         },
       },
       {
-        arrayFilters: [
-          { 'userField.userId': userId }, // Targeting the specific user
-        ],
+        arrayFilters: [{ 'userField.userId': userId }],
       },
     );
   };
@@ -277,14 +267,11 @@ AdminSchema.statics.deleteAdminUserExpenseWhenExpenseIsDeleted =
       { _id: adminId },
       {
         $pull: {
-          // Find the accessedUser by userId and pull the expense by expenseId
           'accessedUser.$[userField].expenses': { expenseId: expenseId },
         },
       },
       {
-        arrayFilters: [
-          { 'userField.userId': userId }, // Targeting the specific user
-        ],
+        arrayFilters: [{ 'userField.userId': userId }],
       },
     );
   };
@@ -294,14 +281,11 @@ AdminSchema.statics.deleteAdminUserInvoiceWhenInvoiceIsDeleted =
       { _id: adminId },
       {
         $pull: {
-          // Find the accessedUser by userId and pull the invoice by invoiceId
           'accessedUser.$[userField].invoices': { invoiceId: invoiceId },
         },
       },
       {
-        arrayFilters: [
-          { 'userField.userId': userId }, // Targeting the specific user
-        ],
+        arrayFilters: [{ 'userField.userId': userId }],
       },
     );
   };
@@ -311,11 +295,9 @@ AdminSchema.statics.deleteAdminUserProfileWhenProfileIsDeleted =
       { _id: adminId },
       {
         $unset: {
-          // Unset the profile field in the specific accessedUser
           'accessedUser.$[userField].profile': 1,
         },
         $set: {
-          // Clear other fields in the specific accessedUser
           'accessedUser.$[userField].customers': [],
           'accessedUser.$[userField].items': [],
           'accessedUser.$[userField].invoices': [],
@@ -330,7 +312,6 @@ AdminSchema.statics.deleteAdminUserProfileWhenProfileIsDeleted =
       },
     );
   };
-// Compile Models
 
 export const AdminModel = model<IAdmin, ModelAdminModel>(
   'AdminModel',

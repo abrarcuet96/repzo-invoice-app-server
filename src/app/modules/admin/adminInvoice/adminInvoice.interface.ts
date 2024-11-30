@@ -4,5 +4,5 @@ export default interface IAdminInvoice {
   total: number;
   currency: string;
   status: 'paid' | 'unpaid' | 'overdue';
-  dueDate: string; // ISO date string
+  dueDate: string;
 }
