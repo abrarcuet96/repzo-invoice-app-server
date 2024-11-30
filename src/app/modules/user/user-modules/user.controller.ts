@@ -1,16 +1,33 @@
 import { Request, Response } from 'express';
+import { AdminModel } from '../../admin/admin.model';
+import { AdminServices } from '../../admin/admin.service';
 import { UserServices } from './user.service';
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
+    if (userData.role === 'user') {
+      const result = await UserServices.createUserIntoDB(userData);
+      const adminData = await AdminModel.find();
+      const adminId = adminData[0]?._id.toString();
+      userData.userId = result._id.toString();
+      userData.giveAccessAs = 'admin';
 
-    const result = await UserServices.createUserIntoDB(userData);
-    res.status(200).json({
-      success: true,
-      message: 'User is created successfully',
-      data: result,
-    });
+      await AdminModel.insertUserToAdminData(adminId, userData);
+      res.status(200).json({
+        success: true,
+        message: 'User is created successfully',
+        data: result,
+      });
+    } else if (userData.role === 'admin') {
+      const result = await AdminServices.createAdminIntoDB(userData);
+      res.status(200).json({
+        success: true,
+        message: 'Admin is created successfully',
+        data: result,
+      });
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({

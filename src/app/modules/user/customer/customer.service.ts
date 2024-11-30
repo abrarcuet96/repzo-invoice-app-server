@@ -20,7 +20,7 @@ const getSingleCustomerFromDB = async (id: string) => {
 };
 // update customer:
 const updateCustomer = async (id: string, payload: ICustomer) => {
-  const result = await Customer.findByIdAndUpdate(id, payload);
+  const result = await Customer.findByIdAndUpdate(id, payload, { new: true });
   return result;
 };
 // delete customer:

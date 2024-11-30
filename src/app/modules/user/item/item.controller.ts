@@ -1,11 +1,18 @@
 import { Request, Response } from 'express';
+import { User } from '../user-modules/user.model';
+import { Item } from './item.model';
 import { ItemServices } from './item.service';
 
 const createItem = async (req: Request, res: Response) => {
   try {
-    const { item: itemData } = req.body;
-
+    const itemData = req.body;
+    const { userId } = req.params;
+    itemData.userId = userId;
     const result = await ItemServices.createItemIntoDB(itemData);
+
+    itemData.itemId = result._id.toString();
+
+    await User.insertItemToUserData(userId, itemData);
     res.status(200).json({
       success: true,
       message: 'Item is created successfully',
@@ -24,7 +31,6 @@ const createItem = async (req: Request, res: Response) => {
 const getItems = async (req: Request, res: Response) => {
   try {
     const result = await ItemServices.getItemFromDB();
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Items are retrieved successfully',
@@ -43,7 +49,6 @@ const getSingleItem = async (req: Request, res: Response) => {
   try {
     const { itemId } = req.params;
     const result = await ItemServices.getSingleItemFromDB(itemId);
-    console.log(result);
     res.status(200).json({
       success: true,
       message: 'Item is retrieved successfully',
@@ -63,7 +68,11 @@ const updateItem = async (req: Request, res: Response) => {
     const { itemId } = req.params;
     const body = req.body;
     const result = await ItemServices.updateItem(itemId, body);
-    console.log(result);
+
+    const itemData = await Item.findById(itemId);
+    const userId = itemData?.userId;
+    const itemID = itemData?._id?.toString();
+    await User.updateUserItemWhenItemIsUpdated(userId, itemID, body);
     res.status(200).json({
       success: true,
       message: 'Item is updated successfully',
@@ -81,8 +90,10 @@ const updateItem = async (req: Request, res: Response) => {
 const deleteItem = async (req: Request, res: Response) => {
   try {
     const { itemId } = req.params;
+    const itemData = await Item.findById(itemId);
+    const userId = itemData?.userId;
     const result = await ItemServices.deleteItem(itemId);
-    console.log(result);
+    await User.deleteUserItemWhenItemIsDeleted(userId, itemId);
     res.status(200).json({
       success: true,
       message: 'Item is deleted successfully',

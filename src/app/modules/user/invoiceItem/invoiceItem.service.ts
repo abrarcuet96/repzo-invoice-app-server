@@ -20,7 +20,9 @@ const getSingleInvoiceItemFromDB = async (id: string) => {
 };
 // update invoiceItem:
 const updateInvoiceItem = async (id: string, payload: IInvoiceItem) => {
-  const result = await InvoiceItem.findByIdAndUpdate(id, payload);
+  const result = await InvoiceItem.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
   return result;
 };
 // delete invoiceItem:

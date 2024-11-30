@@ -2,7 +2,7 @@ import express from 'express';
 import { InvoiceControllers } from './invoice.controller';
 const invoiceRouter = express.Router();
 
-invoiceRouter.post('/', InvoiceControllers.createInvoice);
+invoiceRouter.post('/:userId', InvoiceControllers.createInvoice);
 invoiceRouter.get('/:invoiceId', InvoiceControllers.getSingleInvoice);
 invoiceRouter.get('/', InvoiceControllers.getInvoices);
 invoiceRouter.put('/:invoiceId', InvoiceControllers.updateInvoice);

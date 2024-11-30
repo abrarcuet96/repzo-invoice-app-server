@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express, { Application } from 'express';
+import { AdminRoutes } from './app/modules/admin/admin.router';
 import { CustomerRoutes } from './app/modules/user/customer/customer.route';
 import { ExpenseRoutes } from './app/modules/user/expense/expense.route';
 import { InvoiceRoutes } from './app/modules/user/invoice/invoice.route';
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(cors());
 
 // Routes:
+app.use('/api/admin', AdminRoutes);
 app.use('/api/users', UserRoutes);
 app.use('/api/customer', CustomerRoutes);
 app.use('/api/expense', ExpenseRoutes);

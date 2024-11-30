@@ -15,12 +15,12 @@ const getExpenseFromDB = async () => {
 };
 // getSingle expanse:
 const getSingleExpenseFromDB = async (id: string) => {
-  const result = await Expense.findById({ id });
+  const result = await Expense.findById(id);
   return result;
 };
 // update expanse:
 const updateExpense = async (id: string, payload: IExpense) => {
-  const result = await Expense.findByIdAndUpdate(id, payload);
+  const result = await Expense.findByIdAndUpdate(id, payload, { new: true });
   return result;
 };
 // delete expanse:

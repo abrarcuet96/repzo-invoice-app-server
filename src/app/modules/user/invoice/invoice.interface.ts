@@ -3,13 +3,14 @@ import IPayment from '../payment/payment.interface';
 
 export default interface IInvoice {
   // id: string;
+  invoiceId?: string;
   userId?: string;
   customerId: string;
-  items: IInvoiceItem[];
-  total: number;
+  items?: IInvoiceItem[];
+  total?: number;
   currency: string;
   status: string;
   issuedDate: string;
   dueDate: string;
-  payments: IPayment[];
+  payments?: IPayment[];
 }

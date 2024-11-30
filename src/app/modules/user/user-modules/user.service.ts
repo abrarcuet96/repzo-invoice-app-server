@@ -19,7 +19,9 @@ const getSingleUserFromDB = async (id: string) => {
 };
 // update user:
 const updateUser = async (id: string, payload: IUser) => {
-  const result = await User.findByIdAndUpdate(id, payload);
+  const result = await User.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
   return result;
 };
 // delete user:

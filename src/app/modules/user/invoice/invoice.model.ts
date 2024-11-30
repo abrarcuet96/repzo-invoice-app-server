@@ -5,12 +5,13 @@ import IInvoice from './invoice.interface';
 
 const InvoiceSchema = new Schema<IInvoice>({
   // id: { type: String, required: [true, 'Invoice ID is required'] },
+  invoiceId: { type: String, required: false },
   userId: { type: String, required: false },
   customerId: { type: String, required: [true, 'Customer ID is required'] },
-  items: { type: [InvoiceItemSchema], required: true },
+  items: { type: [InvoiceItemSchema], required: false },
   total: {
     type: Number,
-    required: [true, 'Total is required'],
+    required: false,
     min: [0, 'Total cannot be negative'],
   },
   currency: {
@@ -25,7 +26,7 @@ const InvoiceSchema = new Schema<IInvoice>({
   },
   issuedDate: { type: String, required: [true, 'Issued date is required'] },
   dueDate: { type: String, required: [true, 'Due date is required'] },
-  payments: { type: [PaymentSchema], required: true },
+  payments: { type: [PaymentSchema], required: false },
 });
 
 export const Invoice = model<IInvoice>('Invoice', InvoiceSchema);

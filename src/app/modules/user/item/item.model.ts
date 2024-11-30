@@ -4,6 +4,7 @@ import IItem from './item.interface';
 const ItemSchema = new Schema<IItem>({
   // id: { type: String, required: [true, 'Item ID is required'] },
   userId: { type: String, required: false },
+  itemId: { type: String, required: false },
   name: { type: String, required: [true, 'Item name is required'] },
   description: { type: String, required: [true, 'Description is required'] },
   price: {

@@ -4,6 +4,7 @@ import IProfile from './profile.interface';
 
 const ProfileSchema = new Schema<IProfile>({
   userId: { type: String, required: false },
+  profileId: { type: String, required: false },
   phone: {
     type: String,
     required: [true, 'Phone is required'],

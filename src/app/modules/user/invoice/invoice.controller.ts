@@ -1,11 +1,27 @@
 import { Request, Response } from 'express';
+import { AdminModel } from '../../admin/admin.model';
+import { User } from '../user-modules/user.model';
+import { Invoice } from './invoice.model';
 import { InvoiceServices } from './invoice.service';
 
 const createInvoice = async (req: Request, res: Response) => {
   try {
-    const { invoice: invoiceData } = req.body;
-
+    const invoiceData = req.body;
+    const { userId } = req.params;
+    invoiceData.userId = userId;
     const result = await InvoiceServices.createInvoiceIntoDB(invoiceData);
+    const invoiceId = result._id.toString();
+    invoiceData.invoiceId = invoiceId;
+
+    await User.insertInvoiceToUserData(userId, invoiceData);
+
+    const adminData = await AdminModel.find();
+    const adminId = adminData[0]?._id.toString();
+    await AdminModel.insertUserInvoiceToAdminUserData(
+      adminId,
+      userId,
+      invoiceData,
+    );
     res.status(200).json({
       success: true,
       message: 'Invoice is created successfully',
@@ -24,7 +40,7 @@ const createInvoice = async (req: Request, res: Response) => {
 const getInvoices = async (req: Request, res: Response) => {
   try {
     const result = await InvoiceServices.getInvoiceFromDB();
-    console.log(result);
+
     res.status(200).json({
       success: true,
       message: 'Invoices are retrieved successfully',
@@ -43,7 +59,7 @@ const getSingleInvoice = async (req: Request, res: Response) => {
   try {
     const { invoiceId } = req.params;
     const result = await InvoiceServices.getSingleInvoiceFromDB(invoiceId);
-    console.log(result);
+
     res.status(200).json({
       success: true,
       message: 'Invoice is retrieved successfully',
@@ -62,8 +78,21 @@ const updateInvoice = async (req: Request, res: Response) => {
   try {
     const { invoiceId } = req.params;
     const body = req.body;
+
     const result = await InvoiceServices.updateInvoice(invoiceId, body);
-    console.log(result);
+    const invoiceData = await Invoice.findById(invoiceId);
+    const userId = invoiceData?.userId;
+    const invoiceID = invoiceData?._id?.toString();
+    await User.updateUserInvoiceWhenInvoiceIsUpdated(userId, invoiceID, body);
+    // admin update:
+    const adminData = await AdminModel.find();
+    const adminId = adminData[0]?._id.toString();
+    await AdminModel.updateAdminUserInvoiceWhenInvoiceIsUpdated(
+      adminId,
+      invoiceID,
+      userId,
+      body,
+    );
     res.status(200).json({
       success: true,
       message: 'Invoice is updated successfully',
@@ -81,8 +110,18 @@ const updateInvoice = async (req: Request, res: Response) => {
 const deleteInvoice = async (req: Request, res: Response) => {
   try {
     const { invoiceId } = req.params;
+    const invoiceData = await Invoice.findById(invoiceId);
+    const userId = invoiceData?.userId;
     const result = await InvoiceServices.deleteInvoice(invoiceId);
-    console.log(result);
+    await User.deleteUserInvoiceWhenInvoiceIsDeleted(userId, invoiceId);
+    // admin delete:
+    const adminData = await AdminModel.find();
+    const adminId = adminData[0]?._id.toString();
+    await AdminModel.deleteAdminUserInvoiceWhenInvoiceIsDeleted(
+      userId,
+      adminId,
+      invoiceId,
+    );
     res.status(200).json({
       success: true,
       message: 'Invoice is deleted successfully',

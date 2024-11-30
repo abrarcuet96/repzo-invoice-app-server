@@ -15,12 +15,14 @@ const getItemFromDB = async () => {
 };
 // getSingle item:
 const getSingleItemFromDB = async (id: string) => {
-  const result = await Item.findById({ id });
+  const result = await Item.findById(id);
   return result;
 };
 // update item:
 const updateItem = async (id: string, payload: IItem) => {
-  const result = await Item.findByIdAndUpdate(id, payload);
+  const result = await Item.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
   return result;
 };
 // delete item:

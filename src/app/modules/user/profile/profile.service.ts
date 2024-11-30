@@ -20,7 +20,9 @@ const getSingleProfileFromDB = async (id: string) => {
 };
 // update profile:
 const updateProfile = async (id: string, payload: IProfile) => {
-  const result = await Profile.findByIdAndUpdate(id, payload);
+  const result = await Profile.findByIdAndUpdate(id, payload,{
+    new: true,
+  });
   return result;
 };
 // delete profile:
