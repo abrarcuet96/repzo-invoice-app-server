@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import IAdminCustomer from './adminCustomer.interface';
 
 const AdminCustomerSchema = new Schema({
-  customerId: { type: String, required: true },
+  customerId: { type: String, required: false },
   name: { type: String },
   email: { type: String },
   phone: { type: String },

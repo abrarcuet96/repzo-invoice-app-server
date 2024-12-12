@@ -1,30 +1,30 @@
 import { Request, Response } from 'express';
-// import { AdminModel } from '../../admin/admin.model';
 import { User } from '../user-modules/user.model';
-import { Invoice } from './invoice.model';
-import { InvoiceServices } from './invoice.service';
+import { Quote } from './quotes.model';
+import { QuoteServices } from './quotes.service';
 
-const createInvoice = async (req: Request, res: Response) => {
+const createQuote = async (req: Request, res: Response) => {
   try {
-    const invoiceData = req.body;
+    const quoteData = req.body;
     const { userId } = req.params;
-    invoiceData.userId = userId;
-    const result = await InvoiceServices.createInvoiceIntoDB(invoiceData);
-    const invoiceId = result._id.toString();
-    invoiceData.invoiceId = invoiceId;
+    quoteData.userId = userId;
+    const result = await QuoteServices.createQuoteIntoDB(quoteData);
+    const quoteId = result._id.toString();
+    quoteData.quoteId = quoteId;
+    quoteData.quoteDate = new Date();
 
-    await User.insertInvoiceToUserData(userId, invoiceData);
+    await User.insertQuoteToUserData(userId, quoteData);
 
     // const adminData = await AdminModel.find();
     // const adminId = adminData[0]?._id.toString();
-    // await AdminModel.insertUserInvoiceToAdminUserData(
+    // await AdminModel.insertUserquoteToAdminUserData(
     //   adminId,
     //   userId,
-    //   invoiceData,
+    //   quoteData,
     // );
     res.status(200).json({
       success: true,
-      message: 'Invoice is created successfully',
+      message: 'Quote is created successfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,32 +37,13 @@ const createInvoice = async (req: Request, res: Response) => {
   }
 };
 
-const getInvoices = async (req: Request, res: Response) => {
+const getQuotes = async (req: Request, res: Response) => {
   try {
-    const result = await InvoiceServices.getInvoiceFromDB();
-
-    res.status(200).json({
-      success: true,
-      message: 'Invoices are retrieved successfully',
-      data: result,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'Something went wrong',
-      error: err,
-    });
-  }
-};
-const getSingleInvoice = async (req: Request, res: Response) => {
-  try {
-    const { invoiceId } = req.params;
-    const result = await InvoiceServices.getSingleInvoiceFromDB(invoiceId);
+    const result = await QuoteServices.getQuoteFromDB();
 
     res.status(200).json({
       success: true,
-      message: 'Invoice is retrieved successfully',
+      message: 'Quotes are retrieved successfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -74,28 +55,47 @@ const getSingleInvoice = async (req: Request, res: Response) => {
     });
   }
 };
-const updateInvoice = async (req: Request, res: Response) => {
+const getSingleQuote = async (req: Request, res: Response) => {
   try {
-    const { invoiceId } = req.params;
+    const { quoteId } = req.params;
+    const result = await QuoteServices.getSingleQuoteFromDB(quoteId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Quote is retrieved successfully',
+      data: result,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'Something went wrong',
+      error: err,
+    });
+  }
+};
+const updateQuote = async (req: Request, res: Response) => {
+  try {
+    const { quoteId } = req.params;
     const body = req.body;
 
-    const result = await InvoiceServices.updateInvoice(invoiceId, body);
-    const invoiceData = await Invoice.findById(invoiceId);
-    const userId = invoiceData?.userId;
-    const invoiceID = invoiceData?._id?.toString();
-    await User.updateUserInvoiceWhenInvoiceIsUpdated(userId, invoiceID, body);
+    const result = await QuoteServices.updateQuote(quoteId, body);
+    const quoteData = await Quote.findById(quoteId);
+    const userId = quoteData?.userId;
+    const quoteID = quoteData?._id?.toString();
+    await User.updateUserQuoteWhenQuoteIsUpdated(userId, quoteID, body);
     // admin update:
     // const adminData = await AdminModel.find();
     // const adminId = adminData[0]?._id.toString();
-    // await AdminModel.updateAdminUserInvoiceWhenInvoiceIsUpdated(
+    // await AdminModel.updateAdminUserquoteWhenquoteIsUpdated(
     //   adminId,
-    //   invoiceID,
+    //   quoteID,
     //   userId,
     //   body,
     // );
     res.status(200).json({
       success: true,
-      message: 'Invoice is updated successfully',
+      message: 'Quote is updated successfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -107,24 +107,24 @@ const updateInvoice = async (req: Request, res: Response) => {
     });
   }
 };
-const deleteInvoice = async (req: Request, res: Response) => {
+const deleteQuote = async (req: Request, res: Response) => {
   try {
-    const { invoiceId } = req.params;
-    const invoiceData = await Invoice.findById(invoiceId);
-    const userId = invoiceData?.userId;
-    const result = await InvoiceServices.deleteInvoice(invoiceId);
-    await User.deleteUserInvoiceWhenInvoiceIsDeleted(userId, invoiceId);
+    const { quoteId } = req.params;
+    const quoteData = await Quote.findById(quoteId);
+    const userId = quoteData?.userId;
+    const result = await QuoteServices.deleteQuote(quoteId);
+    await User.deleteUserQuoteWhenQuoteIsDeleted(userId, quoteId);
     // admin delete:
     // const adminData = await AdminModel.find();
     // const adminId = adminData[0]?._id.toString();
-    // await AdminModel.deleteAdminUserInvoiceWhenInvoiceIsDeleted(
+    // await AdminModel.deleteAdminUserquoteWhenquoteIsDeleted(
     //   userId,
     //   adminId,
-    //   invoiceId,
+    //   quoteId,
     // );
     res.status(200).json({
       success: true,
-      message: 'Invoice is deleted successfully',
+      message: 'Quote is deleted successfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -136,10 +136,10 @@ const deleteInvoice = async (req: Request, res: Response) => {
     });
   }
 };
-export const InvoiceControllers = {
-  createInvoice,
-  getInvoices,
-  getSingleInvoice,
-  updateInvoice,
-  deleteInvoice,
+export const QuoteControllers = {
+  createQuote,
+  getQuotes,
+  getSingleQuote,
+  updateQuote,
+  deleteQuote,
 };

@@ -4,7 +4,7 @@ const userRouter = express.Router();
 
 userRouter.post('/', UserControllers.createUser);
 userRouter.get('/', UserControllers.getUsers);
-userRouter.get('/:userId', UserControllers.getSingleUser);
+userRouter.get('/:email', UserControllers.getSingleUser);
 userRouter.put('/:userId', UserControllers.updateUser);
 userRouter.delete('/:userId', UserControllers.deleteUser);
 

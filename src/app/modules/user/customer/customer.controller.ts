@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AdminModel } from '../../admin/admin.model';
+// import { AdminModel } from '../../admin/admin.model';
 import { User } from '../user-modules/user.model';
 import { Customer } from './customer.model';
 import { CustomerServices } from './customer.service';
@@ -15,13 +15,13 @@ const createCustomer = async (req: Request, res: Response) => {
 
     await User.insertCustomerToUserData(userId, customerData);
 
-    const adminData = await AdminModel.find();
-    const adminId = adminData[0]?._id.toString();
-    await AdminModel.insertUserCustomerToAdminUserData(
-      adminId,
-      userId,
-      customerData,
-    );
+    // const adminData = await AdminModel.find();
+    // const adminId = adminData[0]?._id.toString();
+    // await AdminModel.insertUserCustomerToAdminUserData(
+    //   adminId,
+    //   userId,
+    //   customerData,
+    // );
     res.status(200).json({
       success: true,
       message: 'Customer is created successfully',
@@ -91,14 +91,14 @@ const updateCustomer = async (req: Request, res: Response) => {
       body,
     );
     // admin update:
-    const adminData = await AdminModel.find();
-    const adminId = adminData[0]?._id.toString();
-    await AdminModel.updateAdminUserCustomerWhenCustomerIsUpdated(
-      adminId,
-      userId,
-      customerID,
-      body,
-    );
+    // const adminData = await AdminModel.find();
+    // const adminId = adminData[0]?._id.toString();
+    // await AdminModel.updateAdminUserCustomerWhenCustomerIsUpdated(
+    //   adminId,
+    //   userId,
+    //   customerID,
+    //   body,
+    // );
 
     res.status(200).json({
       success: true,
@@ -122,13 +122,13 @@ const deleteCustomer = async (req: Request, res: Response) => {
     const result = await CustomerServices.deleteCustomer(customerId);
     await User.deleteUserCustomerWhenCustomerIsDeleted(userId, customerId);
     // admin delete:
-    const adminData = await AdminModel.find();
-    const adminId = adminData[0]?._id.toString();
-    await AdminModel.deleteAdminUserCustomerWhenCustomerIsDeleted(
-      userId,
-      adminId,
-      customerId,
-    );
+    // const adminData = await AdminModel.find();
+    // const adminId = adminData[0]?._id.toString();
+    // await AdminModel.deleteAdminUserCustomerWhenCustomerIsDeleted(
+    //   userId,
+    //   adminId,
+    //   customerId,
+    // );
     res.status(200).json({
       success: true,
       message: 'Customer is deleted successfully',

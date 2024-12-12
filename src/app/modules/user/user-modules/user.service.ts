@@ -13,8 +13,8 @@ const getUserFromDB = async () => {
   return result;
 };
 // getSingle user:
-const getSingleUserFromDB = async (id: string) => {
-  const result = await User.findById(id);
+const getSingleUserFromDB = async (email: string) => {
+  const result = await User.findOne({ email });
   return result;
 };
 // update user:

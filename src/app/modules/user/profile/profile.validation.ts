@@ -1,14 +1,16 @@
 import { z } from 'zod';
 import AddressValidationSchema from '../address/address.validation';
 
-export const ProfileValidationSchema = z.object({
-  userId: z.string().optional(),
-  profileId: z.string().optional(),
-  phone: z
-    .string()
-    .regex(/^0(13|14|15|16|17|18|19)\d{8}$/, 'Invalid phone number format'),
-  company: z.string().min(1, 'Company name is required'),
-  address: AddressValidationSchema,
+const ProfileValidationSchema = z.object({
+  userId: z.string().optional(), // Optional field
+  profileId: z.string().optional(), // Optional field
+  companyName: z.string().min(1, 'Company name is required'),
+  industryName: z.string().min(1, 'Industry name is required'),
+  currency: z.string().min(1, 'Currency is required'),
+  timeZone: z.string().min(1, 'Time zone is required'),
+  phone: z.string().min(1, 'Phone is required'),
+  company: z.string().min(1, 'Company is required'),
+  address: AddressValidationSchema, // Embedding the AddressSchema
 });
 
 export default ProfileValidationSchema;

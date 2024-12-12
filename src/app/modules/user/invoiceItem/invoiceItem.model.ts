@@ -1,16 +1,47 @@
+import moment from 'moment-timezone';
 import { model, Schema } from 'mongoose';
 import IInvoiceItem from './invoiceItem.interface';
+const InvoiceItemSchema = new Schema<IInvoiceItem>(
+  {
+    itemId: {
+      type: String,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (doc, ret) => {
+        const createdAt = moment(ret.createdAt).tz('Asia/Dhaka');
+        const updatedAt = moment(ret.updatedAt).tz('Asia/Dhaka');
 
-const InvoiceItemSchema = new Schema<IInvoiceItem>({
-  quantity: {
-    type: Number,
-    required: true,
+        ret.createdAt = createdAt.format('MM/DD/YYYY, hh:mm A');
+        ret.updatedAt = updatedAt.format('MM/DD/YYYY, hh:mm A');
+
+        return ret;
+      },
+    },
+    toObject: {
+      transform: (doc, ret) => {
+        const createdAt = moment(ret.createdAt).tz('Asia/Dhaka');
+        const updatedAt = moment(ret.updatedAt).tz('Asia/Dhaka');
+
+        ret.createdAt = createdAt.format('MM/DD/YYYY, hh:mm A');
+        ret.updatedAt = updatedAt.format('MM/DD/YYYY, hh:mm A');
+
+        return ret;
+      },
+    },
   },
-  price: {
-    type: Number,
-    required: true,
-  },
-});
+);
 export const InvoiceItem = model<IInvoiceItem>(
   'InvoiceItem',
   InvoiceItemSchema,

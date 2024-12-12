@@ -1,37 +1,36 @@
 import { Request, Response } from 'express';
-import { AdminModel } from '../../admin/admin.model';
-import { AdminServices } from '../../admin/admin.service';
-import AdminValidationSchema from '../../admin/admin.validation';
+// import { AdminModel } from '../../admin/admin.model';
+// import { AdminServices } from '../../admin/admin.service';
+// import AdminValidationSchema from '../../admin/admin.validation';
 import { UserServices } from './user.service';
 import UserValidationSchema from './user.validation';
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
-    if (userData.role === 'user') {
-      const zodUserParsedData = UserValidationSchema.parse(userData);
-      const result = await UserServices.createUserIntoDB(zodUserParsedData);
-      const adminData = await AdminModel.find();
-      const adminId = adminData[0]?._id.toString();
-      userData.userId = result._id.toString();
-      userData.giveAccessAs = 'admin';
+    // if (userData.role === 'user') {
+    // const adminData = await AdminModel.find();
+    // const adminId = adminData[0]?._id?.toString();
+    const zodUserParsedData = UserValidationSchema.parse(userData);
+    const result = await UserServices.createUserIntoDB(zodUserParsedData);
+    userData.userId = result._id.toString();
 
-      await AdminModel.insertUserToAdminData(adminId, userData);
-      res.status(200).json({
-        success: true,
-        message: 'User is created successfully',
-        data: result,
-      });
-    } else if (userData.role === 'admin') {
-      // data validation using zod:
-      const zodParsedAdminData = AdminValidationSchema.parse(userData);
-      const result = await AdminServices.createAdminIntoDB(zodParsedAdminData);
-      res.status(200).json({
-        success: true,
-        message: 'Admin is created successfully',
-        data: result,
-      });
-    }
+    // await AdminModel.insertUserToAdminData(adminId, userData);
+    res.status(200).json({
+      success: true,
+      message: 'User is created successfully',
+      data: result,
+    });
+    // } else if (userData.role === 'admin') {
+    //   // data validation using zod:
+    //   const zodParsedAdminData = AdminValidationSchema.parse(userData);
+    //   const result = await AdminServices.createAdminIntoDB(zodParsedAdminData);
+    //   res.status(200).json({
+    //     success: true,
+    //     message: 'Admin is created successfully',
+    //     data: result,
+    //   });
+    // }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
@@ -62,8 +61,8 @@ const getUsers = async (req: Request, res: Response) => {
 };
 const getSingleUser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
-    const result = await UserServices.getSingleUserFromDB(userId);
+    const email = req.params.email;
+    const result = await UserServices.getSingleUserFromDB(email);
     res.status(200).json({
       success: true,
       message: 'User is retrieved successfully',

@@ -1,16 +1,35 @@
 import moment from 'moment-timezone';
 import { model, Schema } from 'mongoose';
-import IAddress from './address.interface';
-const AddressSchema = new Schema<IAddress>(
+
+import InvoiceItemSchema from '../invoiceItem/invoiceItem.model';
+import IQuote from './quotes.interface';
+const QuoteSchema = new Schema<IQuote>(
   {
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
-    postalCode: {
+    userId: {
       type: String,
-      required: true,
+      required: false,
     },
-    country: { type: String, required: true },
+    customerId: {
+      type: String,
+      required: false,
+    },
+    quoteId: {
+      type: String,
+      required: false,
+    },
+    quoteDate: {
+      type: String,
+      required: false,
+    },
+    expiryDate: {
+      type: Date,
+      required: false,
+    },
+    items: { type: [InvoiceItemSchema], required: false },
+    total: {
+      type: Number,
+      required: false,
+    },
   },
   {
     timestamps: true,
@@ -38,5 +57,5 @@ const AddressSchema = new Schema<IAddress>(
     },
   },
 );
-export const Address = model<IAddress>('Address', AddressSchema);
-export default AddressSchema;
+export const Quote = model<IQuote>('Quote', QuoteSchema);
+export default QuoteSchema;

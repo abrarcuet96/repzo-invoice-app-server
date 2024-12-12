@@ -1,4 +1,7 @@
+import bcrypt from 'bcrypt';
+import moment from 'moment-timezone';
 import { model, Schema } from 'mongoose';
+import config from '../../../config';
 import flattenObject from '../../../config/objectFlattening';
 import ICustomer from '../customer/customer.interface';
 import CustomerSchema from '../customer/customer.model';
@@ -10,32 +13,78 @@ import IItem from '../item/item.interface';
 import ItemSchema from '../item/item.model';
 import NotificationSchema from '../notification/notification.model';
 import ProfileSchema from '../profile/profile.model';
+import IQuote from '../quotes/quotes.interface';
+import QuoteSchema from '../quotes/quotes.model';
 import SettingsSchema from '../settings/settings.model';
 import IUser, { UserModel } from './user.interface';
+const UserSchema = new Schema<IUser, UserModel>(
+  {
+    name: { type: String, required: true },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+    },
+    password: { type: String, required: false },
+    profileImage: { type: String, required: true },
+    // role: {
+    //   type: String,
+    //   required: true,
+    //   enum: ['user', 'admin'],
+    // },
+    profile: { type: ProfileSchema, required: false },
+    customers: { type: [CustomerSchema], required: false },
+    items: { type: [ItemSchema], required: false },
+    invoices: { type: [InvoiceSchema], required: false },
+    quotes: { type: [QuoteSchema], required: false },
+    expenses: { type: [ExpenseSchema], required: false },
+    notifications: { type: [NotificationSchema], required: false },
+    settings: { type: SettingsSchema, required: false },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (doc, ret) => {
+        const createdAt = moment(ret.createdAt).tz('Asia/Dhaka');
+        const updatedAt = moment(ret.updatedAt).tz('Asia/Dhaka');
 
-const UserSchema = new Schema<IUser, UserModel>({
-  name: { type: String, required: true },
-  email: {
-    type: String,
-    required: [true, 'Email is required'],
+        ret.createdAt = createdAt.format('MM/DD/YYYY, hh:mm A');
+        ret.updatedAt = updatedAt.format('MM/DD/YYYY, hh:mm A');
+
+        return ret;
+      },
+    },
+    toObject: {
+      transform: (doc, ret) => {
+        const createdAt = moment(ret.createdAt).tz('Asia/Dhaka');
+        const updatedAt = moment(ret.updatedAt).tz('Asia/Dhaka');
+
+        ret.createdAt = createdAt.format('MM/DD/YYYY, hh:mm A');
+        ret.updatedAt = updatedAt.format('MM/DD/YYYY, hh:mm A');
+
+        return ret;
+      },
+    },
   },
-  role: {
-    type: String,
-    required: true,
-    enum: ['user', 'admin'],
-  },
-  giveAccessAs: {
-    type: String,
-    enum: ['user', 'admin'],
-    required: false,
-  },
-  profile: { type: ProfileSchema, required: false },
-  customers: { type: [CustomerSchema], required: false },
-  items: { type: [ItemSchema], required: false },
-  invoices: { type: [InvoiceSchema], required: false },
-  expenses: { type: [ExpenseSchema], required: false },
-  notifications: { type: [NotificationSchema], required: false },
-  settings: { type: SettingsSchema, required: false },
+);
+
+UserSchema.pre('save', async function (next) {
+  // console.log(this, 'pre hook: we will save the data');
+
+  const user = this as IUser; // doc
+  // hashing password and save into DB
+  if (user.password) {
+    user.password = await bcrypt.hash(
+      user.password,
+      Number(config.bcrypt_salt_rounds),
+    );
+  }
+  next();
+});
+
+UserSchema.post('save', function (doc, next) {
+  doc.password = '';
+  next();
 });
 // insert into user when data is created:
 UserSchema.statics.insertProfileToUserData = async function (
@@ -90,6 +139,17 @@ UserSchema.statics.insertInvoiceToUserData = async function (
     { _id: userId },
     {
       $push: { invoices: invoiceData },
+    },
+  );
+};
+UserSchema.statics.insertQuoteToUserData = async function (
+  userId: string,
+  quoteData: IQuote,
+) {
+  await this.findByIdAndUpdate(
+    { _id: userId },
+    {
+      $push: { quotes: quoteData },
     },
   );
 };
@@ -198,6 +258,30 @@ UserSchema.statics.updateUserInvoiceWhenInvoiceIsUpdated = async function (
     },
   );
 };
+UserSchema.statics.updateUserQuoteWhenQuoteIsUpdated = async function (
+  userId: string,
+  quoteId: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  body: Record<string, any>,
+) {
+  // Define updateFields as an object with string keys
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateFields: { [key: string]: any } = {};
+
+  for (const [key, value] of Object.entries(body)) {
+    updateFields[`quotes.$[quoteField].${key}`] = value;
+  }
+
+  await User.updateOne(
+    { _id: userId },
+    { $set: updateFields },
+    {
+      arrayFilters: [
+        { 'quoteField.quoteId': quoteId }, // Match the specific item by ID
+      ],
+    },
+  );
+};
 
 // delete data from user when any data is deleted:
 UserSchema.statics.deleteUserCustomerWhenCustomerIsDeleted = async function (
@@ -252,6 +336,19 @@ UserSchema.statics.deleteUserInvoiceWhenInvoiceIsDeleted = async function (
     },
   );
 };
+UserSchema.statics.deleteUserQuoteWhenQuoteIsDeleted = async function (
+  userId: string,
+  quoteId: string,
+) {
+  await User.updateOne(
+    { _id: userId },
+    {
+      $pull: {
+        quotes: { quoteId: quoteId },
+      },
+    },
+  );
+};
 UserSchema.statics.deleteUserProfileWhenProfileIsDeleted = async function (
   userId: string,
 ) {
@@ -262,6 +359,7 @@ UserSchema.statics.deleteUserProfileWhenProfileIsDeleted = async function (
       $set: {
         customers: [],
         items: [],
+        quotes: [],
         invoices: [],
         expenses: [],
         notifications: [],
@@ -269,10 +367,4 @@ UserSchema.statics.deleteUserProfileWhenProfileIsDeleted = async function (
     },
   );
 };
-
-// giveAccessAs:
-UserSchema.pre('save', async function (next) {
-  this.giveAccessAs = 'admin';
-  next();
-});
 export const User = model<IUser, UserModel>('User', UserSchema);

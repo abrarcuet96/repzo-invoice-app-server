@@ -5,17 +5,20 @@ import IInvoice from '../invoice/invoice.interface';
 import IItem from '../item/item.interface';
 import INotification from '../notification/notification.interface';
 import IProfile from '../profile/profile.interface';
+import IQuote from '../quotes/quotes.interface';
 import ISettings from '../settings/settings.interface';
 
 interface IUser {
   name: string;
   email: string;
-  role: string;
-  giveAccessAs?: 'user' | 'admin';
+  password?: string;
+  profileImage: string;
+  // role: string;
   profile?: IProfile;
   customers?: ICustomer[];
   items?: IItem[];
   invoices?: IInvoice[];
+  quotes?: IQuote[];
   expenses?: IExpense[];
   notifications?: INotification[];
   settings?: ISettings;
@@ -27,7 +30,7 @@ export interface UserModel extends Model<IUser> {
     profileData: IProfile,
   ): Promise<IProfile | null>;
   insertCustomerToUserData(
-    userId: string,
+    email: string,
     customerData: ICustomer,
   ): Promise<ICustomer | null>;
   insertItemToUserData(userId: string, itemData: IItem): Promise<IItem | null>;
@@ -38,6 +41,10 @@ export interface UserModel extends Model<IUser> {
   insertInvoiceToUserData(
     userId: string,
     invoiceData: IInvoice,
+  ): Promise<IInvoice | null>;
+  insertQuoteToUserData(
+    userId: string,
+    quoteData: IQuote,
   ): Promise<IInvoice | null>;
 
   // update user data when data is updated:
@@ -65,6 +72,11 @@ export interface UserModel extends Model<IUser> {
     expenseId: string | undefined,
     expenseBody: object,
   ): Promise<IInvoice | null>;
+  updateUserQuoteWhenQuoteIsUpdated(
+    userId: string | undefined,
+    quoteId: string | undefined,
+    quoteBody: object,
+  ): Promise<IQuote | null>;
 
   // delete data from user when any data is deleted:
   deleteUserProfileWhenProfileIsDeleted(
@@ -86,5 +98,9 @@ export interface UserModel extends Model<IUser> {
     userId: string | undefined,
     invoiceId: string | undefined,
   ): Promise<IInvoice | null>;
+  deleteUserQuoteWhenQuoteIsDeleted(
+    userId: string | undefined,
+    quoteId: string | undefined,
+  ): Promise<IQuote | null>;
 }
 export default IUser;
