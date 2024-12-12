@@ -2,16 +2,18 @@ import { Request, Response } from 'express';
 import { User } from '../user-modules/user.model';
 import { Quote } from './quotes.model';
 import { QuoteServices } from './quotes.service';
+import { generatedQuoteId } from './quotes.utils';
 
 const createQuote = async (req: Request, res: Response) => {
   try {
     const quoteData = req.body;
     const { userId } = req.params;
     quoteData.userId = userId;
-    const result = await QuoteServices.createQuoteIntoDB(quoteData);
-    const quoteId = result._id.toString();
+    quoteData.quoteDate = new Date().toString();
+    const quoteId = await generatedQuoteId(userId);
     quoteData.quoteId = quoteId;
-    quoteData.quoteDate = new Date();
+
+    const result = await QuoteServices.createQuoteIntoDB(quoteData);
 
     await User.insertQuoteToUserData(userId, quoteData);
 
@@ -58,6 +60,7 @@ const getQuotes = async (req: Request, res: Response) => {
 const getSingleQuote = async (req: Request, res: Response) => {
   try {
     const { quoteId } = req.params;
+
     const result = await QuoteServices.getSingleQuoteFromDB(quoteId);
 
     res.status(200).json({
@@ -80,10 +83,10 @@ const updateQuote = async (req: Request, res: Response) => {
     const body = req.body;
 
     const result = await QuoteServices.updateQuote(quoteId, body);
-    const quoteData = await Quote.findById(quoteId);
+    const quoteData = await Quote.findOne({ quoteId });
     const userId = quoteData?.userId;
-    const quoteID = quoteData?._id?.toString();
-    await User.updateUserQuoteWhenQuoteIsUpdated(userId, quoteID, body);
+    // const quoteID = quoteData?._id?.toString();
+    await User.updateUserQuoteWhenQuoteIsUpdated(userId, quoteId, body);
     // admin update:
     // const adminData = await AdminModel.find();
     // const adminId = adminData[0]?._id.toString();
@@ -110,7 +113,9 @@ const updateQuote = async (req: Request, res: Response) => {
 const deleteQuote = async (req: Request, res: Response) => {
   try {
     const { quoteId } = req.params;
-    const quoteData = await Quote.findById(quoteId);
+    // console.log(quoteId);
+
+    const quoteData = await Quote.findOne({ quoteId });
     const userId = quoteData?.userId;
     const result = await QuoteServices.deleteQuote(quoteId);
     await User.deleteUserQuoteWhenQuoteIsDeleted(userId, quoteId);

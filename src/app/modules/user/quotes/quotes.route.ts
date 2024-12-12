@@ -4,8 +4,8 @@ const quoteRouter = express.Router();
 
 quoteRouter.post('/:userId', QuoteControllers.createQuote);
 quoteRouter.get('/:quoteId', QuoteControllers.getSingleQuote);
-quoteRouter.get('/', QuoteControllers.getQuotes);
 quoteRouter.put('/:quoteId', QuoteControllers.updateQuote);
 quoteRouter.delete('/:quoteId', QuoteControllers.deleteQuote);
+quoteRouter.get('/', QuoteControllers.getQuotes);
 
 export const QuoteRoutes = quoteRouter;

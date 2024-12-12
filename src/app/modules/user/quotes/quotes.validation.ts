@@ -6,7 +6,7 @@ const QuoteValidationSchema = z.object({
   customerId: z.string().optional(),
   quoteId: z.string().optional(),
   quoteDate: z.string().optional(),
-  expiryDate: z.date().optional(),
+  expiryDate: z.string().optional(),
   items: z.array(InvoiceItemValidationSchema).optional(),
   total: z.number().optional(),
 });

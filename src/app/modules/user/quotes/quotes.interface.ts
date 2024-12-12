@@ -7,6 +7,6 @@ interface IQuote {
   quoteDate?: string;
   expiryDate?: string;
   items?: IInvoiceItem[];
-  total?: string;
+  total?: number;
 }
 export default IQuote;

@@ -146,7 +146,7 @@ UserSchema.statics.insertQuoteToUserData = async function (
   userId: string,
   quoteData: IQuote,
 ) {
-  await this.findByIdAndUpdate(
+  await this.findOneAndUpdate(
     { _id: userId },
     {
       $push: { quotes: quoteData },

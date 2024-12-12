@@ -3,15 +3,16 @@ import { Request, Response } from 'express';
 import { User } from '../user-modules/user.model';
 import { Customer } from './customer.model';
 import { CustomerServices } from './customer.service';
+import { generatedCustomerId } from './customer.utils';
 
 const createCustomer = async (req: Request, res: Response) => {
   try {
     const customerData = req.body;
     const { userId } = req.params;
     customerData.userId = userId;
-    const result = await CustomerServices.createCustomerIntoDB(customerData);
-    const customerId = result._id.toString();
+    const customerId = await generatedCustomerId(userId);
     customerData.customerId = customerId;
+    const result = await CustomerServices.createCustomerIntoDB(customerData);
 
     await User.insertCustomerToUserData(userId, customerData);
 
@@ -55,6 +56,27 @@ const getCustomers = async (req: Request, res: Response) => {
     });
   }
 };
+const getCustomersQueryEmail = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.query;
+    const result = await CustomerServices.getCustomerFromDBQyeryName(
+      name as string,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Customers are retrieved successfully',
+      data: result,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'Something went wrong',
+      error: err,
+    });
+  }
+};
 const getSingleCustomer = async (req: Request, res: Response) => {
   try {
     const { customerId } = req.params;
@@ -81,13 +103,12 @@ const updateCustomer = async (req: Request, res: Response) => {
     const body = req.body;
     const result = await CustomerServices.updateCustomer(customerId, body);
 
-    const customerData = await Customer.findById(customerId);
+    const customerData = await Customer.findOne({ customerId });
     const userId = customerData?.userId;
-    const customerID = customerData?._id?.toString();
 
     await User.updateUserCustomerWhenCustomerIsUpdated(
       userId,
-      customerID,
+      customerId,
       body,
     );
     // admin update:
@@ -117,7 +138,7 @@ const updateCustomer = async (req: Request, res: Response) => {
 const deleteCustomer = async (req: Request, res: Response) => {
   try {
     const { customerId } = req.params;
-    const customerData = await Customer.findById(customerId);
+    const customerData = await Customer.findOne({ customerId });
     const userId = customerData?.userId;
     const result = await CustomerServices.deleteCustomer(customerId);
     await User.deleteUserCustomerWhenCustomerIsDeleted(userId, customerId);
@@ -149,4 +170,5 @@ export const CustomerControllers = {
   getSingleCustomer,
   updateCustomer,
   deleteCustomer,
+  getCustomersQueryEmail,
 };

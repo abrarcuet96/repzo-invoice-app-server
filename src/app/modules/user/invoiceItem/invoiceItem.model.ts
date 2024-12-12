@@ -7,6 +7,10 @@ const InvoiceItemSchema = new Schema<IInvoiceItem>(
       type: String,
       required: true,
     },
+    name: {
+      type: String,
+      required: false,
+    },
     quantity: {
       type: Number,
       required: true,

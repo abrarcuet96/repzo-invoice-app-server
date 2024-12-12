@@ -9,8 +9,10 @@ const createItemIntoDB = async (payload: IItem) => {
   return result;
 };
 // get item:
-const getItemFromDB = async () => {
-  const result = await Item.find();
+const getItemFromDB = async (name: string) => {
+  const result = await Item.find({
+    name: { $regex: new RegExp(name, 'i') },
+  });
   return result;
 };
 // getSingle item:

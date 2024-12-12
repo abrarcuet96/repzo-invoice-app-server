@@ -13,6 +13,7 @@ const QuoteSchema = new Schema<IQuote>(
       type: String,
       required: false,
     },
+
     quoteId: {
       type: String,
       required: false,
@@ -22,7 +23,7 @@ const QuoteSchema = new Schema<IQuote>(
       required: false,
     },
     expiryDate: {
-      type: Date,
+      type: String,
       required: false,
     },
     items: { type: [InvoiceItemSchema], required: false },

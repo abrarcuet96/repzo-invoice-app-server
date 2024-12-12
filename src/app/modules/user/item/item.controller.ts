@@ -30,7 +30,8 @@ const createItem = async (req: Request, res: Response) => {
 
 const getItems = async (req: Request, res: Response) => {
   try {
-    const result = await ItemServices.getItemFromDB();
+    const { name } = req.query;
+    const result = await ItemServices.getItemFromDB(name as string);
     res.status(200).json({
       success: true,
       message: 'Items are retrieved successfully',
