@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { generateNewId } from '../../../utils/generateId';
 import { User } from '../user-modules/user.model';
 import { Item } from './item.model';
 import { ItemServices } from './item.service';
@@ -8,9 +9,9 @@ const createItem = async (req: Request, res: Response) => {
     const itemData = req.body;
     const { userId } = req.params;
     itemData.userId = userId;
+    const itemId = await generateNewId(Item, userId, 'itemId', 'ITE');
+    itemData.itemId = itemId;
     const result = await ItemServices.createItemIntoDB(itemData);
-
-    itemData.itemId = result._id.toString();
 
     await User.insertItemToUserData(userId, itemData);
     res.status(200).json({
@@ -70,10 +71,9 @@ const updateItem = async (req: Request, res: Response) => {
     const body = req.body;
     const result = await ItemServices.updateItem(itemId, body);
 
-    const itemData = await Item.findById(itemId);
+    const itemData = await Item.findOne({ itemId });
     const userId = itemData?.userId;
-    const itemID = itemData?._id?.toString();
-    await User.updateUserItemWhenItemIsUpdated(userId, itemID, body);
+    await User.updateUserItemWhenItemIsUpdated(userId, itemId, body);
     res.status(200).json({
       success: true,
       message: 'Item is updated successfully',
@@ -91,7 +91,7 @@ const updateItem = async (req: Request, res: Response) => {
 const deleteItem = async (req: Request, res: Response) => {
   try {
     const { itemId } = req.params;
-    const itemData = await Item.findById(itemId);
+    const itemData = await Item.findOne({ itemId });
     const userId = itemData?.userId;
     const result = await ItemServices.deleteItem(itemId);
     await User.deleteUserItemWhenItemIsDeleted(userId, itemId);

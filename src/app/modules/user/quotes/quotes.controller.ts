@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
+import { generateNewId } from '../../../utils/generateId';
 import { User } from '../user-modules/user.model';
 import { Quote } from './quotes.model';
 import { QuoteServices } from './quotes.service';
-import { generatedQuoteId } from './quotes.utils';
 
 const createQuote = async (req: Request, res: Response) => {
   try {
@@ -10,7 +10,7 @@ const createQuote = async (req: Request, res: Response) => {
     const { userId } = req.params;
     quoteData.userId = userId;
     quoteData.quoteDate = new Date().toString();
-    const quoteId = await generatedQuoteId(userId);
+    const quoteId = await generateNewId(Quote, userId, 'quoteId', 'QUO');
     quoteData.quoteId = quoteId;
 
     const result = await QuoteServices.createQuoteIntoDB(quoteData);

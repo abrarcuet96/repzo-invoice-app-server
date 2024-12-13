@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 // import { AdminModel } from '../../admin/admin.model';
+import { generateNewId } from '../../../utils/generateId';
 import { User } from '../user-modules/user.model';
 import { Invoice } from './invoice.model';
 import { InvoiceServices } from './invoice.service';
@@ -9,9 +10,9 @@ const createInvoice = async (req: Request, res: Response) => {
     const invoiceData = req.body;
     const { userId } = req.params;
     invoiceData.userId = userId;
-    const result = await InvoiceServices.createInvoiceIntoDB(invoiceData);
-    const invoiceId = result._id.toString();
+    const invoiceId = await generateNewId(Invoice, userId, 'invoiceId', 'INV');
     invoiceData.invoiceId = invoiceId;
+    const result = await InvoiceServices.createInvoiceIntoDB(invoiceData);
 
     await User.insertInvoiceToUserData(userId, invoiceData);
 
@@ -80,10 +81,9 @@ const updateInvoice = async (req: Request, res: Response) => {
     const body = req.body;
 
     const result = await InvoiceServices.updateInvoice(invoiceId, body);
-    const invoiceData = await Invoice.findById(invoiceId);
+    const invoiceData = await Invoice.findOne({ invoiceId });
     const userId = invoiceData?.userId;
-    const invoiceID = invoiceData?._id?.toString();
-    await User.updateUserInvoiceWhenInvoiceIsUpdated(userId, invoiceID, body);
+    await User.updateUserInvoiceWhenInvoiceIsUpdated(userId, invoiceId, body);
     // admin update:
     // const adminData = await AdminModel.find();
     // const adminId = adminData[0]?._id.toString();
@@ -110,7 +110,7 @@ const updateInvoice = async (req: Request, res: Response) => {
 const deleteInvoice = async (req: Request, res: Response) => {
   try {
     const { invoiceId } = req.params;
-    const invoiceData = await Invoice.findById(invoiceId);
+    const invoiceData = await Invoice.findOne({ invoiceId });
     const userId = invoiceData?.userId;
     const result = await InvoiceServices.deleteInvoice(invoiceId);
     await User.deleteUserInvoiceWhenInvoiceIsDeleted(userId, invoiceId);

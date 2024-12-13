@@ -16,20 +16,20 @@ const getItemFromDB = async (name: string) => {
   return result;
 };
 // getSingle item:
-const getSingleItemFromDB = async (id: string) => {
-  const result = await Item.findById(id);
+const getSingleItemFromDB = async (itemId: string) => {
+  const result = await Item.findOne({ itemId });
   return result;
 };
 // update item:
-const updateItem = async (id: string, payload: IItem) => {
-  const result = await Item.findByIdAndUpdate(id, payload, {
+const updateItem = async (itemId: string, payload: IItem) => {
+  const result = await Item.findOneAndUpdate({ itemId }, payload, {
     new: true,
   });
   return result;
 };
 // delete item:
-const deleteItem = async (id: string) => {
-  const result = await Item.findByIdAndDelete(id);
+const deleteItem = async (itemId: string) => {
+  const result = await Item.findOneAndDelete({ itemId });
   return result;
 };
 //

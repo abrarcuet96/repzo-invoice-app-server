@@ -1,6 +1,8 @@
 export default interface IPayment {
   userId?: string;
-  method: string;
+  paymentId?: string;
+  // method: string;
   amount: number;
   date: string;
+  status: string;
 }

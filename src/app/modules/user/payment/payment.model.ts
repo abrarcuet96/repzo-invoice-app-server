@@ -4,11 +4,12 @@ import IPayment from './payment.interface';
 const PaymentSchema = new Schema<IPayment>(
   {
     userId: { type: String, required: false },
-    method: {
-      type: String,
-      required: true,
-      enum: ['credit_card', 'paypal', 'bank_transfer', 'cash'],
-    },
+    paymentId: { type: String, required: false },
+    // method: {
+    //   type: String,
+    //   required: true,
+    //   enum: ['credit_card', 'paypal', 'bank_transfer', 'cash'],
+    // },
     amount: {
       type: Number,
       required: true,
@@ -16,6 +17,11 @@ const PaymentSchema = new Schema<IPayment>(
     date: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      enum: ['sent', 'recieved'],
     },
   },
   {

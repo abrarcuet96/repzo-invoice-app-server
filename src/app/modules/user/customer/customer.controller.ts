@@ -1,16 +1,21 @@
 import { Request, Response } from 'express';
 // import { AdminModel } from '../../admin/admin.model';
+import { generateNewId } from '../../../utils/generateId';
 import { User } from '../user-modules/user.model';
 import { Customer } from './customer.model';
 import { CustomerServices } from './customer.service';
-import { generatedCustomerId } from './customer.utils';
 
 const createCustomer = async (req: Request, res: Response) => {
   try {
     const customerData = req.body;
     const { userId } = req.params;
     customerData.userId = userId;
-    const customerId = await generatedCustomerId(userId);
+    const customerId = await generateNewId(
+      Customer,
+      userId,
+      'customerId',
+      'CUS',
+    );
     customerData.customerId = customerId;
     const result = await CustomerServices.createCustomerIntoDB(customerData);
 

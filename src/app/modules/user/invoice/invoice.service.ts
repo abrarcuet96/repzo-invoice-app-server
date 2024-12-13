@@ -14,12 +14,12 @@ const getInvoiceFromDB = async () => {
   return result;
 };
 // getSingle invoice:
-const getSingleInvoiceFromDB = async (id: string) => {
-  const result = await Invoice.findById(id);
+const getSingleInvoiceFromDB = async (invoiceId: string) => {
+  const result = await Invoice.findOne({ invoiceId });
   return result;
 };
 // update invoice:
-const updateInvoice = async (id: string, payload: Partial<IInvoice>) => {
+const updateInvoice = async (invoiceId: string, payload: Partial<IInvoice>) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setPayload: Record<string, any> = {};
 
@@ -29,8 +29,8 @@ const updateInvoice = async (id: string, payload: Partial<IInvoice>) => {
       setPayload[key] = payload[key as keyof IInvoice];
     }
   }
-  const result = await Invoice.findByIdAndUpdate(
-    id,
+  const result = await Invoice.findOneAndUpdate(
+    { invoiceId },
     { $set: setPayload },
     { new: true },
   );
@@ -38,8 +38,8 @@ const updateInvoice = async (id: string, payload: Partial<IInvoice>) => {
   return result;
 };
 // delete invoice:
-const deleteInvoice = async (id: string) => {
-  const result = await Invoice.findByIdAndDelete(id);
+const deleteInvoice = async (invoiceId: string) => {
+  const result = await Invoice.findOneAndDelete({ invoiceId });
   return result;
 };
 //

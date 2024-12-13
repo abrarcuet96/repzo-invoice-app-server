@@ -1,10 +1,15 @@
 import { Request, Response } from 'express';
+import { generateNewId } from '../../../utils/generateId';
+import { Payment } from './payment.model';
 import { PaymentServices } from './payment.service';
 
 const createPayment = async (req: Request, res: Response) => {
   try {
-    const { payment: paymentData } = req.body;
-
+    const paymentData = req.body;
+    const { userId } = req.params;
+    paymentData.userId = userId;
+    const paymentId = await generateNewId(Payment, userId, 'paymentId', 'PAY');
+    paymentData.paymentId = paymentId;
     const result = await PaymentServices.createPaymentIntoDB(paymentData);
     res.status(200).json({
       success: true,
