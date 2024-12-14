@@ -27,11 +27,11 @@ const UserSchema = new Schema<IUser, UserModel>(
     },
     password: { type: String, required: false },
     profileImage: { type: String, required: true },
-    // role: {
-    //   type: String,
-    //   required: true,
-    //   enum: ['user', 'admin'],
-    // },
+    role: {
+      type: String,
+      required: true,
+      enum: ['user', 'customer'],
+    },
     profile: { type: ProfileSchema, required: false },
     customers: { type: [CustomerSchema], required: false },
     items: { type: [ItemSchema], required: false },

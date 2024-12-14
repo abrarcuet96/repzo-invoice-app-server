@@ -13,7 +13,7 @@ interface IUser {
   email: string;
   password?: string;
   profileImage: string;
-  // role: string;
+  role: string;
   profile?: IProfile;
   customers?: ICustomer[];
   items?: IItem[];

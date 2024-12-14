@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express, { Application } from 'express';
 import { CustomerRoutes } from './app/modules/user/customer/customer.route';
+import { CustomerUserRoutes } from './app/modules/user/customerUser/customerUser.route';
 import { ExpenseRoutes } from './app/modules/user/expense/expense.route';
 import { InvoiceRoutes } from './app/modules/user/invoice/invoice.route';
 import { InvoiceItemRoutes } from './app/modules/user/invoiceItem/invoiceItem.route';
@@ -22,6 +23,7 @@ app.use(cors());
 
 // User Routes:
 app.use('/api/users', UserRoutes);
+app.use('/api/customerUser', CustomerUserRoutes);
 app.use('/api/customer', CustomerRoutes);
 app.use('/api/expense', ExpenseRoutes);
 app.use('/api/invoice', InvoiceRoutes);

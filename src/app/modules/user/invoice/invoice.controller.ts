@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 // import { AdminModel } from '../../admin/admin.model';
 import { generateNewId } from '../../../utils/generateId';
+import { Payment } from '../payment/payment.model';
 import { User } from '../user-modules/user.model';
 import { Invoice } from './invoice.model';
 import { InvoiceServices } from './invoice.service';
@@ -12,6 +13,9 @@ const createInvoice = async (req: Request, res: Response) => {
     invoiceData.userId = userId;
     const invoiceId = await generateNewId(Invoice, userId, 'invoiceId', 'INV');
     invoiceData.invoiceId = invoiceId;
+    const paymentId = await generateNewId(Payment, userId, 'paymentId', 'PAY');
+    invoiceData.payment.paymentId = paymentId;
+    invoiceData.payment.userId = userId;
     const result = await InvoiceServices.createInvoiceIntoDB(invoiceData);
 
     await User.insertInvoiceToUserData(userId, invoiceData);

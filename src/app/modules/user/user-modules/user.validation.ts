@@ -13,7 +13,7 @@ export const UserValidationSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().optional(),
   profileImage: z.string().min(1, 'Image is required'),
-  // role: z.enum(['user', 'admin']),
+  role: z.enum(['user', 'customer']),
   // giveAccessAs: z.enum(['user', 'admin']).optional(),
   profile: ProfileValidationSchema.optional(),
   customers: z.array(CustomerValidationSchema).optional(),

@@ -2,14 +2,14 @@ import IInvoiceItem from '../invoiceItem/invoiceItem.interface';
 import IPayment from '../payment/payment.interface';
 
 export default interface IInvoice {
-  invoiceId?: string;
   userId?: string;
-  customerId: string;
-  items?: IInvoiceItem[];
-  total?: number;
-  currency: string;
-  status: string;
+  customerId?: string;
+  invoiceId?: string;
   issuedDate: string;
   dueDate: string;
-  payments?: IPayment[];
+  items?: IInvoiceItem[];
+  status: string;
+  total?: number;
+  currency: string;
+  payment?: IPayment;
 }

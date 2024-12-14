@@ -14,14 +14,10 @@ const PaymentSchema = new Schema<IPayment>(
       type: Number,
       required: true,
     },
-    date: {
-      type: String,
-      required: true,
-    },
     status: {
       type: String,
       required: true,
-      enum: ['sent', 'recieved'],
+      enum: ['pending', 'recieved'],
     },
   },
   {
