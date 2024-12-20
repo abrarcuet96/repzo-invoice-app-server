@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import cors from 'cors';
 import express, { Application } from 'express';
 import { CustomerRoutes } from './app/modules/user/customer/customer.route';
@@ -11,17 +12,21 @@ import { PaymentRoutes } from './app/modules/user/payment/payment.route';
 import { ProfileRoutes } from './app/modules/user/profile/profile.route';
 import { QuoteRoutes } from './app/modules/user/quotes/quotes.route';
 import { SettingsRoutes } from './app/modules/user/settings/settings.route';
+import { SSLPaymentRoutes } from './app/modules/user/sslPayment/sslPayment.route';
 import { UserRoutes } from './app/modules/user/user-modules/user.route';
-
 const app: Application = express();
-app.use(express.json());
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded());
 
 // API Routes:
 // Admin Route:
 // app.use('/api/admin', AdminRoutes);
 
 // User Routes:
+app.use('/api/sslPayment', SSLPaymentRoutes);
+app.use('/api/users', UserRoutes);
 app.use('/api/users', UserRoutes);
 app.use('/api/customerUser', CustomerUserRoutes);
 app.use('/api/customer', CustomerRoutes);

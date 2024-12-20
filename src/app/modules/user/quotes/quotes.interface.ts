@@ -8,5 +8,11 @@ interface IQuote {
   expiryDate?: string;
   items?: IInvoiceItem[];
   total?: number;
+  status?: string;
+  isAccepted?: boolean;
+  isDeclined?: boolean;
+  isInvoiceSent?: boolean;
+  message?: string;
+  currency: string;
 }
 export default IQuote;

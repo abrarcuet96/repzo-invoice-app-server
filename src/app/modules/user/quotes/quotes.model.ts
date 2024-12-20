@@ -31,6 +31,32 @@ const QuoteSchema = new Schema<IQuote>(
       type: Number,
       required: false,
     },
+    status: {
+      type: String,
+      enum: ['accepted', 'declined', 'pending'],
+      required: false,
+    },
+    isAccepted: {
+      type: Boolean,
+      required: false,
+    },
+    isDeclined: {
+      type: Boolean,
+      required: false,
+    },
+    isInvoiceSent: {
+      type: Boolean,
+      required: false,
+    },
+    message: {
+      type: String,
+      required: false,
+    },
+    currency: {
+      type: String,
+      required: true,
+      enum: ['USD', 'EUR', 'BDT', 'GBP'],
+    },
   },
   {
     timestamps: true,

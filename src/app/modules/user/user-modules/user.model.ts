@@ -40,6 +40,12 @@ const UserSchema = new Schema<IUser, UserModel>(
     expenses: { type: [ExpenseSchema], required: false },
     notifications: { type: [NotificationSchema], required: false },
     settings: { type: SettingsSchema, required: false },
+    template: {
+      type: String,
+      required: false,
+      enum: ['standard', 'continental', 'compact'],
+      default: 'standard',
+    },
   },
   {
     timestamps: true,

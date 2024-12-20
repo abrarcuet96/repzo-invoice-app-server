@@ -14,7 +14,6 @@ export const UserValidationSchema = z.object({
   password: z.string().optional(),
   profileImage: z.string().min(1, 'Image is required'),
   role: z.enum(['user', 'customer']),
-  // giveAccessAs: z.enum(['user', 'admin']).optional(),
   profile: ProfileValidationSchema.optional(),
   customers: z.array(CustomerValidationSchema).optional(),
   items: z.array(ItemValidationSchema).optional(),
@@ -23,6 +22,10 @@ export const UserValidationSchema = z.object({
   expenses: z.array(ExpenseValidationSchema).optional(),
   notifications: z.array(NotificationValidationSchema).optional(),
   settings: SettingsValidationSchema.optional(),
+  template: z
+    .enum(['standard', 'continental', 'compact'])
+    .default('standard')
+    .optional(),
 });
 
 export default UserValidationSchema;

@@ -1,14 +1,28 @@
+import { Customer } from '../customer/customer.model';
+import { Invoice } from '../invoice/invoice.model';
+import { Quote } from '../quotes/quotes.model';
 import { User } from '../user-modules/user.model';
 
 const getSingleCustomerUserFromDB = async (email: string) => {
   const result = await User.aggregate([
-    { $unwind: '$customers' }, // Decompose the array into individual documents
-    { $match: { 'customers.email': email } }, // Match customerId
-    { $project: { name: 1, email: 1, profileImage: 1 } }, // Project desired fields
+    { $unwind: '$customers' },
+    { $match: { 'customers.email': email } },
+    { $project: { name: 1, email: 1, profileImage: 1, template: 1 } },
   ]);
-  return result;
+  const customer = await Customer.findOne(
+    { email: email },
+    { customerId: 1, _id: 0 },
+  );
+
+  const customerId = customer ? customer.customerId : null;
+
+  const quotes = await Quote.find({ customerId: customerId });
+  const invoices = await Invoice.find({ customerId: customerId });
+
+  return [result, quotes, invoices];
 };
 export const CustomerUserServices = {
   // user customer:
   getSingleCustomerUserFromDB,
+  // getQuotesByCustomerIdFromDB,
 };

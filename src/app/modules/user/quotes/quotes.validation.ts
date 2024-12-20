@@ -9,6 +9,12 @@ const QuoteValidationSchema = z.object({
   expiryDate: z.string().optional(),
   items: z.array(InvoiceItemValidationSchema).optional(),
   total: z.number().optional(),
+  status: z.enum(['accepted', 'declined', 'pending']),
+  isAccepted: z.boolean().optional(),
+  isDeclined: z.boolean().optional(),
+  isInvoiceSent: z.boolean().optional(),
+  message: z.string().optional(),
+  currency: z.enum(['USD', 'EUR', 'BDT', 'GBP']),
 });
 
 export default QuoteValidationSchema;

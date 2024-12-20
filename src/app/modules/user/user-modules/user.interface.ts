@@ -22,6 +22,7 @@ interface IUser {
   expenses?: IExpense[];
   notifications?: INotification[];
   settings?: ISettings;
+  template?: string;
 }
 export interface UserModel extends Model<IUser> {
   // insert into user when data is created:
