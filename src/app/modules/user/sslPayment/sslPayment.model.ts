@@ -5,6 +5,7 @@ const paymentInfoSchema = new Schema<IPaymentInfo>(
   {
     currency: { type: String, required: true },
     userId: { type: String, required: true },
+    invoiceId: { type: String, required: true },
     cus_name: { type: String, required: true },
     tranId: { type: String, required: true, unique: true },
     status: {

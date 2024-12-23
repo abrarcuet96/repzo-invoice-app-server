@@ -1,22 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { Request, Response } from 'express';
-import { generateNewId } from '../../../utils/generateId';
+import { Invoice } from '../invoice/invoice.model';
+import { User } from '../user-modules/user.model';
 import PaymentInfo from './sslPayment.model';
 import { SSLPaymentServices } from './sslPayment.service';
 
 const createSSLPayment = async (req: Request, res: Response) => {
   try {
     const paymentData = req.body;
+    console.log(paymentData);
+
     const userId = paymentData.userId;
-    const tranId = await generateNewId(PaymentInfo, userId, 'tranId', 'TRX');
-    paymentData.tranId = tranId;
+    // const tranId = await generateNewId(PaymentInfo, userId, 'tranId', 'TRX');
+    const tranId = paymentData.tranId;
     const initiateData = {
       store_id: 'repzo6763b4496cc0d',
       store_passwd: 'repzo6763b4496cc0d@ssl',
       total_amount: paymentData.total,
       currency: paymentData.currency,
       tran_id: tranId,
+      invoiceId: paymentData.invoiceId,
       success_url: 'http://localhost:5000/api/sslPayment/success-payment',
       fail_url: 'http://localhost:5000/api/sslPayment/fail',
       cancel_url: 'http://localhost:5000/api/sslPayment/cancel',
@@ -52,11 +56,13 @@ const createSSLPayment = async (req: Request, res: Response) => {
     const saveData = {
       currency: paymentData.currency,
       userId: userId,
+      invoiceId: paymentData.invoiceId,
       cus_name: 'Abrar',
       tranId: tranId,
       status: 'pending',
       amount: paymentData.total,
     };
+    console.log('saved data: ', saveData);
     const result = await SSLPaymentServices.createSSLPaymentIntoDB(saveData);
     console.log(result);
 
@@ -90,6 +96,24 @@ const successSSLPayment = async (req: Request, res: Response) => {
     const updateData = await SSLPaymentServices.updateSSLPaymentIntoDB(
       tranId,
       updateInfo,
+    );
+    const invoiceUpdateInfo = {
+      status: 'paid',
+      payment: {
+        status: 'recieved',
+      },
+    };
+    const invoiceData = await PaymentInfo.findOne(
+      { tranId },
+      { userId: 1, invoiceId: 1 },
+    );
+    const invoiceId = invoiceData?.invoiceId;
+    const userId = invoiceData?.userId;
+    await Invoice.findOneAndUpdate({ invoiceId }, invoiceUpdateInfo);
+    await User.updateUserInvoiceWhenInvoiceIsUpdated(
+      userId,
+      invoiceId,
+      invoiceUpdateInfo,
     );
     console.log('updated data: ', updateData);
     res.redirect('http://localhost:5173/success');

@@ -12,4 +12,5 @@ export default interface IInvoice {
   total?: number;
   currency: string;
   payment?: IPayment;
+  isDeleted?: boolean;
 }

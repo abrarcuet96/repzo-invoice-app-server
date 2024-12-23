@@ -12,6 +12,7 @@ interface IQuote {
   isAccepted?: boolean;
   isDeclined?: boolean;
   isInvoiceSent?: boolean;
+  isDeleted?: boolean;
   message?: string;
   currency: string;
 }

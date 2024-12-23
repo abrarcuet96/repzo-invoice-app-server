@@ -13,6 +13,7 @@ const QuoteValidationSchema = z.object({
   isAccepted: z.boolean().optional(),
   isDeclined: z.boolean().optional(),
   isInvoiceSent: z.boolean().optional(),
+  isDeleted: z.boolean().optional(),
   message: z.string().optional(),
   currency: z.enum(['USD', 'EUR', 'BDT', 'GBP']),
 });

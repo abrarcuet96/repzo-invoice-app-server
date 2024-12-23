@@ -13,6 +13,7 @@ import { ProfileRoutes } from './app/modules/user/profile/profile.route';
 import { QuoteRoutes } from './app/modules/user/quotes/quotes.route';
 import { SettingsRoutes } from './app/modules/user/settings/settings.route';
 import { SSLPaymentRoutes } from './app/modules/user/sslPayment/sslPayment.route';
+import { TrackRoutes } from './app/modules/user/track/track.route';
 import { UserRoutes } from './app/modules/user/user-modules/user.route';
 const app: Application = express();
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -25,8 +26,8 @@ app.use(express.urlencoded());
 // app.use('/api/admin', AdminRoutes);
 
 // User Routes:
+app.use('/api/track', TrackRoutes);
 app.use('/api/sslPayment', SSLPaymentRoutes);
-app.use('/api/users', UserRoutes);
 app.use('/api/users', UserRoutes);
 app.use('/api/customerUser', CustomerUserRoutes);
 app.use('/api/customer', CustomerRoutes);

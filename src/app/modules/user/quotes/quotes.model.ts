@@ -48,6 +48,10 @@ const QuoteSchema = new Schema<IQuote>(
       type: Boolean,
       required: false,
     },
+    isDeleted: {
+      type: Boolean,
+      required: false,
+    },
     message: {
       type: String,
       required: false,

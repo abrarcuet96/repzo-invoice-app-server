@@ -25,8 +25,11 @@ const InvoiceSchema = new Schema<IInvoice>(
       required: true,
       enum: ['USD', 'EUR', 'BDT', 'GBP'],
     },
-
     payment: { type: PaymentSchema, required: false },
+    isDeleted: {
+      type: Boolean,
+      required: false,
+    },
   },
   {
     timestamps: true,

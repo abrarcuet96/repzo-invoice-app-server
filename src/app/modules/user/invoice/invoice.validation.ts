@@ -17,6 +17,7 @@ export const InvoiceValidationSchema = z.object({
   total: z.number().min(0, 'Total cannot be negative').optional(),
   currency: z.enum(['USD', 'EUR', 'BDT', 'GBP']),
   payment: PaymentValidationSchema.optional(),
+  isDeleted: z.boolean().optional(),
 });
 
 export default InvoiceValidationSchema;
