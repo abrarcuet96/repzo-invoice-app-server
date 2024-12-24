@@ -8,9 +8,6 @@ import UserValidationSchema from './user.validation';
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
-    // if (userData.role === 'user') {
-    // const adminData = await AdminModel.find();
-    // const adminId = adminData[0]?._id?.toString();
     const zodUserParsedData = UserValidationSchema.parse(userData);
     const result = await UserServices.createUserIntoDB(zodUserParsedData);
     userData.userId = result._id.toString();

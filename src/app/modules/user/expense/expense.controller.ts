@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import { generateNewId } from '../../../utils/generateId';
-// import { AdminModel } from '../../admin/admin.model';
+import { v4 as uuidv4 } from 'uuid';
 import { User } from '../user-modules/user.model';
 import { Expense } from './expense.model';
 import { ExpenseServices } from './expense.service';
@@ -10,7 +9,7 @@ const createExpense = async (req: Request, res: Response) => {
     const expenseData = req.body;
     const { userId } = req.params;
     expenseData.userId = userId;
-    const expenseId = await generateNewId(Expense, userId, 'expenseId', 'EXP');
+    const expenseId = uuidv4();
     expenseData.expenseId = expenseId;
     const result = await ExpenseServices.createExpenseIntoDB(expenseData);
 

@@ -21,9 +21,10 @@ const createSSLPayment = async (req: Request, res: Response) => {
       currency: paymentData.currency,
       tran_id: tranId,
       invoiceId: paymentData.invoiceId,
-      success_url: 'http://localhost:5000/api/sslPayment/success-payment',
-      fail_url: 'http://localhost:5000/api/sslPayment/fail',
-      cancel_url: 'http://localhost:5000/api/sslPayment/cancel',
+      success_url:
+        'https://repzo-backend.vercel.app/api/sslPayment/success-payment',
+      fail_url: 'https://repzo-backend.vercel.app/api/sslPayment/fail',
+      cancel_url: 'https://repzo-backend.vercel.app/api/sslPayment/cancel',
       cus_name: 'Customer Name',
       cus_email: 'cust@yahoo.com',
       cus_add1: 'Dhaka',
@@ -116,7 +117,7 @@ const successSSLPayment = async (req: Request, res: Response) => {
       invoiceUpdateInfo,
     );
     console.log('updated data: ', updateData);
-    res.redirect('http://localhost:5173/success');
+    res.redirect('https://repzo-invoice-app.web.app/success');
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -127,7 +128,7 @@ const successSSLPayment = async (req: Request, res: Response) => {
 };
 const cancelSSLPayment = async (req: Request, res: Response) => {
   try {
-    res.redirect('http://localhost:5173/cancel');
+    res.redirect('https://repzo-invoice-app.web.app/cancel');
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -138,7 +139,7 @@ const cancelSSLPayment = async (req: Request, res: Response) => {
 };
 const failSSLPayment = async (req: Request, res: Response) => {
   try {
-    res.redirect('http://localhost:5173/fail');
+    res.redirect('https://repzo-invoice-app.web.app/fail');
   } catch (err: any) {
     res.status(500).json({
       success: false,
