@@ -9,6 +9,7 @@ const mongoose_1 = require("mongoose");
 const ItemSchema = new mongoose_1.Schema({
     userId: { type: String, required: false },
     itemId: { type: String, required: false },
+    itemNo: { type: String, required: false },
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: {

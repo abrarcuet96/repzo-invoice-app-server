@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { generateNewId } from '../../../utils/generateId';
 import { User } from '../user-modules/user.model';
 import { Invoice } from './invoice.model';
 import { InvoiceServices } from './invoice.service';
@@ -12,6 +13,8 @@ const createInvoice = async (req: Request, res: Response) => {
     const invoiceId = uuidv4();
     invoiceData.invoiceId = invoiceId;
     const paymentId = uuidv4();
+    const invoiceNo = await generateNewId(Invoice, userId, 'invoiceNo', 'INV');
+    invoiceData.invoiceNo = invoiceNo;
     invoiceData.payment.paymentId = paymentId;
     invoiceData.payment.userId = userId;
     const result = await InvoiceServices.createInvoiceIntoDB(invoiceData);

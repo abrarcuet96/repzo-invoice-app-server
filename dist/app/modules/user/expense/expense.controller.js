@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExpenseControllers = void 0;
 const uuid_1 = require("uuid");
+const generateId_1 = require("../../../utils/generateId");
 const user_model_1 = require("../user-modules/user.model");
 const expense_model_1 = require("./expense.model");
 const expense_service_1 = require("./expense.service");
@@ -21,6 +22,8 @@ const createExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         expenseData.userId = userId;
         const expenseId = (0, uuid_1.v4)();
         expenseData.expenseId = expenseId;
+        const expenseNo = yield (0, generateId_1.generateNewId)(expense_model_1.Expense, userId, 'expenseNo', 'EXP');
+        expenseData.expenseNo = expenseNo;
         const result = yield expense_service_1.ExpenseServices.createExpenseIntoDB(expenseData);
         yield user_model_1.User.insertExpenseToUserData(userId, expenseData);
         // const adminData = await AdminModel.find();

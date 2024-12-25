@@ -16,7 +16,15 @@ const QuoteSchema = new mongoose_1.Schema({
         type: String,
         required: false,
     },
+    customerNo: {
+        type: String,
+        required: false,
+    },
     quoteId: {
+        type: String,
+        required: false,
+    },
+    quoteNo: {
         type: String,
         required: false,
     },

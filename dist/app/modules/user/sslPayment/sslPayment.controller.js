@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SSLPaymentController = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const axios_1 = __importDefault(require("axios"));
+const generateId_1 = require("../../../utils/generateId");
 const invoice_model_1 = require("../invoice/invoice.model");
 const user_model_1 = require("../user-modules/user.model");
 const sslPayment_model_1 = __importDefault(require("./sslPayment.model"));
@@ -24,7 +25,8 @@ const createSSLPayment = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const paymentData = req.body;
         console.log(paymentData);
         const userId = paymentData.userId;
-        // const tranId = await generateNewId(PaymentInfo, userId, 'tranId', 'TRX');
+        const tranNo = yield (0, generateId_1.generateNewId)(sslPayment_model_1.default, userId, 'tranNo', 'TRX');
+        paymentData.tranNo = tranNo;
         const tranId = paymentData.tranId;
         const initiateData = {
             store_id: 'repzo6763b4496cc0d',

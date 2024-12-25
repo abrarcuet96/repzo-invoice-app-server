@@ -4,7 +4,9 @@ import IPayment from '../payment/payment.interface';
 export default interface IInvoice {
   userId?: string;
   customerId?: string;
+  customerNo?: string;
   invoiceId?: string;
+  invoiceNo?: string;
   issuedDate: string;
   dueDate: string;
   items?: IInvoiceItem[];

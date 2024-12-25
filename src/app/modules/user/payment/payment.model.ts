@@ -5,11 +5,7 @@ const PaymentSchema = new Schema<IPayment>(
   {
     userId: { type: String, required: false },
     paymentId: { type: String, required: false },
-    // method: {
-    //   type: String,
-    //   required: true,
-    //   enum: ['credit_card', 'paypal', 'bank_transfer', 'cash'],
-    // },
+    paymentNo: { type: String, required: false },
     amount: {
       type: Number,
       required: true,

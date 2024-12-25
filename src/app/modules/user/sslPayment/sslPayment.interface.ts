@@ -1,9 +1,10 @@
 export interface IPaymentInfo {
-  currency: string; // Currency code (e.g., "USD", "BDT")
-  userId: string; // Unique identifier for the user
-  invoiceId: string; // Unique identifier for the user
-  cus_name: string; // Customer name
-  tranId: string; // Transaction ID
-  status: string; // Payment status
+  currency: string;
+  userId: string;
+  invoiceId: string;
+  tranNo?: string;
+  cus_name: string;
+  tranId: string;
+  status: string;
   amount: number;
 }

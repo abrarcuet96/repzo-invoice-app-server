@@ -6,8 +6,10 @@ import IInvoice from './invoice.interface';
 const InvoiceSchema = new Schema<IInvoice>(
   {
     userId: { type: String, required: false },
-    customerId: { type: String, required: true },
+    customerId: { type: String, required: false },
+    customerNo: { type: String, required: false },
     invoiceId: { type: String, required: false },
+    invoiceNo: { type: String, required: false },
     issuedDate: { type: String, required: true },
     dueDate: { type: String, required: true },
     items: { type: [InvoiceItemSchema], required: false },

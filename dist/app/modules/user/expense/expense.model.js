@@ -9,6 +9,7 @@ const mongoose_1 = require("mongoose");
 const ExpenseSchema = new mongoose_1.Schema({
     userId: { type: String, required: false },
     expenseId: { type: String, required: false },
+    expenseNo: { type: String, required: false },
     name: { type: String, required: true },
     amount: {
         type: Number,

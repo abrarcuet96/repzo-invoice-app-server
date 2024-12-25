@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { generateNewId } from '../../../utils/generateId';
 import { User } from '../user-modules/user.model';
 import { Expense } from './expense.model';
 import { ExpenseServices } from './expense.service';
@@ -11,6 +12,8 @@ const createExpense = async (req: Request, res: Response) => {
     expenseData.userId = userId;
     const expenseId = uuidv4();
     expenseData.expenseId = expenseId;
+    const expenseNo = await generateNewId(Expense, userId, 'expenseNo', 'EXP');
+    expenseData.expenseNo = expenseNo;
     const result = await ExpenseServices.createExpenseIntoDB(expenseData);
 
     await User.insertExpenseToUserData(userId, expenseData);

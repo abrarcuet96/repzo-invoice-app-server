@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InvoiceControllers = void 0;
 const uuid_1 = require("uuid");
+const generateId_1 = require("../../../utils/generateId");
 const user_model_1 = require("../user-modules/user.model");
 const invoice_model_1 = require("./invoice.model");
 const invoice_service_1 = require("./invoice.service");
@@ -22,6 +23,8 @@ const createInvoice = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const invoiceId = (0, uuid_1.v4)();
         invoiceData.invoiceId = invoiceId;
         const paymentId = (0, uuid_1.v4)();
+        const invoiceNo = yield (0, generateId_1.generateNewId)(invoice_model_1.Invoice, userId, 'invoiceNo', 'INV');
+        invoiceData.invoiceNo = invoiceNo;
         invoiceData.payment.paymentId = paymentId;
         invoiceData.payment.userId = userId;
         const result = yield invoice_service_1.InvoiceServices.createInvoiceIntoDB(invoiceData);

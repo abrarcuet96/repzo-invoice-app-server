@@ -1,6 +1,7 @@
 interface IItem {
   userId?: string;
   itemId?: string;
+  itemNo?: string;
   name: string;
   description: string;
   price: number;

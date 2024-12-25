@@ -6,6 +6,7 @@ const CustomerSchema = new Schema<ICustomer>(
   {
     userId: { type: String, required: false },
     customerId: { type: String, required: false },
+    customerNo: { type: String, required: false },
     name: { type: String, required: true },
     email: {
       type: String,

@@ -5,6 +5,7 @@ const ExpenseSchema = new Schema<IExpense>(
   {
     userId: { type: String, required: false },
     expenseId: { type: String, required: false },
+    expenseNo: { type: String, required: false },
     name: { type: String, required: true },
     amount: {
       type: Number,

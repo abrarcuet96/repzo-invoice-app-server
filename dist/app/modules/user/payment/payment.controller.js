@@ -11,6 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentControllers = void 0;
 const uuid_1 = require("uuid");
+const generateId_1 = require("../../../utils/generateId");
+const payment_model_1 = require("./payment.model");
 const payment_service_1 = require("./payment.service");
 const createPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -18,6 +20,8 @@ const createPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { userId } = req.params;
         paymentData.userId = userId;
         const paymentId = (0, uuid_1.v4)();
+        const paymentNo = yield (0, generateId_1.generateNewId)(payment_model_1.Payment, userId, 'paymentNo', 'PAY');
+        paymentData.paymentNo = paymentNo;
         paymentData.paymentId = paymentId;
         const result = yield payment_service_1.PaymentServices.createPaymentIntoDB(paymentData);
         res.status(200).json({

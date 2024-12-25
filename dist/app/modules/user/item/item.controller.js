@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ItemControllers = void 0;
 const uuid_1 = require("uuid");
+const generateId_1 = require("../../../utils/generateId");
 const user_model_1 = require("../user-modules/user.model");
 const item_model_1 = require("./item.model");
 const item_service_1 = require("./item.service");
@@ -20,6 +21,8 @@ const createItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const { userId } = req.params;
         itemData.userId = userId;
         const itemId = (0, uuid_1.v4)();
+        const itemNo = yield (0, generateId_1.generateNewId)(item_model_1.Item, userId, 'itemNo', 'ITE');
+        itemData.itemNo = itemNo;
         itemData.itemId = itemId;
         const result = yield item_service_1.ItemServices.createItemIntoDB(itemData);
         yield user_model_1.User.insertItemToUserData(userId, itemData);

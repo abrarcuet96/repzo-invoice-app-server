@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { generateNewId } from '../../../utils/generateId';
 import { User } from '../user-modules/user.model';
 import { Quote } from './quotes.model';
 import { QuoteServices } from './quotes.service';
@@ -10,19 +11,14 @@ const createQuote = async (req: Request, res: Response) => {
     quoteData.userId = userId;
     quoteData.quoteDate = new Date().toString();
     const quoteId = uuidv4();
+    const quoteNo = await generateNewId(Quote, userId, 'quoteNo', 'QUO');
+    quoteData.quoteNo = quoteNo;
     quoteData.quoteId = quoteId;
 
     const result = await QuoteServices.createQuoteIntoDB(quoteData);
 
     await User.insertQuoteToUserData(userId, quoteData);
 
-    // const adminData = await AdminModel.find();
-    // const adminId = adminData[0]?._id.toString();
-    // await AdminModel.insertUserquoteToAdminUserData(
-    //   adminId,
-    //   userId,
-    //   quoteData,
-    // );
     res.status(200).json({
       success: true,
       message: 'Quote is created successfully',

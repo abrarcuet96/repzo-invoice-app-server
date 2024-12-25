@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { generateNewId } from '../../../utils/generateId';
+import { Payment } from './payment.model';
 import { PaymentServices } from './payment.service';
 const createPayment = async (req: Request, res: Response) => {
   try {
@@ -7,6 +9,8 @@ const createPayment = async (req: Request, res: Response) => {
     const { userId } = req.params;
     paymentData.userId = userId;
     const paymentId = uuidv4();
+    const paymentNo = await generateNewId(Payment, userId, 'paymentNo', 'PAY');
+    paymentData.paymentNo = paymentNo;
     paymentData.paymentId = paymentId;
     const result = await PaymentServices.createPaymentIntoDB(paymentData);
     res.status(200).json({

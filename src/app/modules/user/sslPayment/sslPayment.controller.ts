@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { Request, Response } from 'express';
+import { generateNewId } from '../../../utils/generateId';
 import { Invoice } from '../invoice/invoice.model';
 import { User } from '../user-modules/user.model';
 import PaymentInfo from './sslPayment.model';
@@ -12,7 +13,8 @@ const createSSLPayment = async (req: Request, res: Response) => {
     console.log(paymentData);
 
     const userId = paymentData.userId;
-    // const tranId = await generateNewId(PaymentInfo, userId, 'tranId', 'TRX');
+    const tranNo = await generateNewId(PaymentInfo, userId, 'tranNo', 'TRX');
+    paymentData.tranNo = tranNo;
     const tranId = paymentData.tranId;
     const initiateData = {
       store_id: 'repzo6763b4496cc0d',

@@ -10,8 +10,10 @@ const invoiceItem_model_1 = __importDefault(require("../invoiceItem/invoiceItem.
 const payment_model_1 = __importDefault(require("../payment/payment.model"));
 const InvoiceSchema = new mongoose_1.Schema({
     userId: { type: String, required: false },
-    customerId: { type: String, required: true },
+    customerId: { type: String, required: false },
+    customerNo: { type: String, required: false },
     invoiceId: { type: String, required: false },
+    invoiceNo: { type: String, required: false },
     issuedDate: { type: String, required: true },
     dueDate: { type: String, required: true },
     items: { type: [invoiceItem_model_1.default], required: false },

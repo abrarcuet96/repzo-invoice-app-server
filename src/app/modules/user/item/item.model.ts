@@ -5,6 +5,7 @@ const ItemSchema = new Schema<IItem>(
   {
     userId: { type: String, required: false },
     itemId: { type: String, required: false },
+    itemNo: { type: String, required: false },
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: {

@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuoteControllers = void 0;
 const uuid_1 = require("uuid");
+const generateId_1 = require("../../../utils/generateId");
 const user_model_1 = require("../user-modules/user.model");
 const quotes_model_1 = require("./quotes.model");
 const quotes_service_1 = require("./quotes.service");
@@ -21,16 +22,11 @@ const createQuote = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         quoteData.userId = userId;
         quoteData.quoteDate = new Date().toString();
         const quoteId = (0, uuid_1.v4)();
+        const quoteNo = yield (0, generateId_1.generateNewId)(quotes_model_1.Quote, userId, 'quoteNo', 'QUO');
+        quoteData.quoteNo = quoteNo;
         quoteData.quoteId = quoteId;
         const result = yield quotes_service_1.QuoteServices.createQuoteIntoDB(quoteData);
         yield user_model_1.User.insertQuoteToUserData(userId, quoteData);
-        // const adminData = await AdminModel.find();
-        // const adminId = adminData[0]?._id.toString();
-        // await AdminModel.insertUserquoteToAdminUserData(
-        //   adminId,
-        //   userId,
-        //   quoteData,
-        // );
         res.status(200).json({
             success: true,
             message: 'Quote is created successfully',

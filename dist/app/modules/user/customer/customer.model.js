@@ -10,6 +10,7 @@ const address_model_1 = __importDefault(require("../address/address.model"));
 const CustomerSchema = new mongoose_1.Schema({
     userId: { type: String, required: false },
     customerId: { type: String, required: false },
+    customerNo: { type: String, required: false },
     name: { type: String, required: true },
     email: {
         type: String,

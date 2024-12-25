@@ -3,7 +3,9 @@ import IInvoiceItem from '../invoiceItem/invoiceItem.interface';
 interface IQuote {
   userId?: string;
   customerId?: string;
+  customerNo?: string;
   quoteId?: string;
+  quoteNo?: string;
   quoteDate?: string;
   expiryDate?: string;
   items?: IInvoiceItem[];

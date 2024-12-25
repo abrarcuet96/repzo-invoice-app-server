@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { generateNewId } from '../../../utils/generateId';
 import { User } from '../user-modules/user.model';
 import { Item } from './item.model';
 import { ItemServices } from './item.service';
@@ -10,6 +11,8 @@ const createItem = async (req: Request, res: Response) => {
     const { userId } = req.params;
     itemData.userId = userId;
     const itemId = uuidv4();
+    const itemNo = await generateNewId(Item, userId, 'itemNo', 'ITE');
+    itemData.itemNo = itemNo;
     itemData.itemId = itemId;
     const result = await ItemServices.createItemIntoDB(itemData);
 
